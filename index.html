@@ -180,14 +180,14 @@
             padding: 20px;
             overflow-y: auto;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             gap: 20px;
             box-sizing: border-box;
         }
 
         /* Vídeo em Destaque */
         .video-destaque {
-            width: 100%;
+            flex: 3;
             background-color: #000;
             position: relative;
             padding-bottom: 56.25%; /* 16:9 */
@@ -213,10 +213,11 @@
 
         /* Lista de Próximos Vídeos */
         .lista-videos {
+            flex: 1;
             display: flex;
             flex-direction: column;
             gap: 20px;
-            max-height: none;
+            max-height: calc(100vh - 160px); /* Ajusta a altura considerando o header */
             overflow-y: auto;
         }
 
@@ -345,13 +346,11 @@
             }
 
             .videos-view {
-                flex-direction: column;
+                flex-direction: row;
             }
 
             .lista-videos {
-                flex-direction: column;
-                overflow-y: auto;
-                max-height: none;
+                max-height: calc(100vh - 160px);
             }
         }
 
@@ -377,6 +376,11 @@
 
             main {
                 margin-top: 160px; /* Ajuste para header maior em mobile */
+                flex-direction: column;
+            }
+
+            .videos-view {
+                flex-direction: column;
             }
 
             .video-destaque {
@@ -387,6 +391,10 @@
             .video-thumbnail {
                 width: 120px;
                 height: 67.5px;
+            }
+
+            .lista-videos {
+                max-height: none;
             }
         }
 
@@ -457,6 +465,11 @@
 
             main {
                 margin-top: 160px; /* Ajuste para header maior em mobile */
+                flex-direction: column;
+            }
+
+            .videos-view {
+                flex-direction: column;
             }
         }
     </style>
@@ -535,241 +548,236 @@
     <!-- Polyfill para classList em navegadores mais antigos (como IE9) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.2.20171210/classList.min.js" integrity="sha512-+EFDhhkVYVwAeFJVdX4snWnxUzA+cCkG6ogtsqkFeFth2fs+5a2AWb9+cgGjR8HbE+w3VIZbcYdGgTgCygXMsw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        // Estrutura de dados para categorias e vídeos
+        // Estrutura de dados para categorias e vídeos com IDs válidos do YouTube
         const categorias = {
             'categoria1': [
                 {
-                    id: '1bllGB-UZNZJtl1WwAJ-HR_fdBFo7q5G_',
-                    titulo: 'O que é um computador?',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=O+que+é+um+computador?'
+                    id: 'dQw4w9WgXcQ',
+                    titulo: 'Introdução aos Computadores',
+                    thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg'
                 },
                 {
-                    id: '1baQOeeQivEQKgFHHgmpyut42OJXnQacX',
-                    titulo: 'Tipos de computadores',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Tipos+de+computadores'
+                    id: '3JZ_D3ELwOQ',
+                    titulo: 'Componentes de um Computador',
+                    thumbnail: 'https://img.youtube.com/vi/3JZ_D3ELwOQ/hqdefault.jpg'
                 },
                 {
-                    id: '1b__BL3g-DiGr4jr0xczQYYg-vwqfJhmE',
-                    titulo: 'Componentes de um computador',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Componentes+de+um+computador'
+                    id: 'L_jWHffIx5E',
+                    titulo: 'Montando um PC',
+                    thumbnail: 'https://img.youtube.com/vi/L_jWHffIx5E/hqdefault.jpg'
                 },
                 {
-                    id: '1bXFvFn3rZ77o4hTkkwHSC_yQjAsNzBqw',
-                    titulo: 'Conectando dispositivos de armazenamento',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Conectando+dispositivos+de+armazenamento'
+                    id: 'tVj0ZTS4WF4',
+                    titulo: 'Tipos de Dispositivos',
+                    thumbnail: 'https://img.youtube.com/vi/tVj0ZTS4WF4/hqdefault.jpg'
                 },
                 {
-                    id: '1bWR0FhgntS0fA3TIlTjQ_QVY0c6T5oqD',
-                    titulo: 'Conectando dispositivos de bluetooth',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Conectando+dispositivos+de+bluetooth'
+                    id: 'VbfpW0pbvaU',
+                    titulo: 'Periféricos Essenciais',
+                    thumbnail: 'https://img.youtube.com/vi/VbfpW0pbvaU/hqdefault.jpg'
                 },
                 // Adicione mais vídeos conforme necessário
             ],
             'categoria2': [
                 {
-                    id: '1cU7PAuB51ATl6MNq_hNVCfbH--0PyT3C',
-                    titulo: 'O que é um sistema operacional?',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=O+que+é+um+sistema+operacional?'
+                    id: '9bZkp7q19f0',
+                    titulo: 'O que é um Sistema Operacional?',
+                    thumbnail: 'https://img.youtube.com/vi/9bZkp7q19f0/hqdefault.jpg'
                 },
                 {
-                    id: '1cTPOSGUT2qzBQjFQufRYLGck8sp-nYM6',
+                    id: 'e-ORhEE9VVg',
                     titulo: 'Trabalhando com Windows 10',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Trabalhando+com+Windows+10'
+                    thumbnail: 'https://img.youtube.com/vi/e-ORhEE9VVg/hqdefault.jpg'
                 },
                 {
-                    id: '1c2KDvlV63Yn9O5KThEBF_37mLr9QPOSy',
-                    titulo: 'Personalizando sua área de trabalho',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Personalizando+sua+área+de+trabalho'
+                    id: 'fRh_vgS2dFE',
+                    titulo: 'Personalizando sua Área de Trabalho',
+                    thumbnail: 'https://img.youtube.com/vi/fRh_vgS2dFE/hqdefault.jpg'
                 },
                 {
-                    id: '1cHLEdQCzdWEateWPzKnAcyP4QU95TRJl',
-                    titulo: 'Organizando janelas dos aplicativos',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Organizando+janelas+dos+aplicativos'
+                    id: 'OPf0YbXqDm0',
+                    titulo: 'Organizando Janelas de Aplicativos',
+                    thumbnail: 'https://img.youtube.com/vi/OPf0YbXqDm0/hqdefault.jpg'
                 },
                 {
-                    id: '1cK-O5PzW2y48L6BHBcBEiamGt7mAKmaX',
-                    titulo: 'Organizando arquivos e pastas',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Organizando+arquivos+e+pastas'
+                    id: 'YQHsXMglC9A',
+                    titulo: 'Gerenciando Arquivos e Pastas',
+                    thumbnail: 'https://img.youtube.com/vi/YQHsXMglC9A/hqdefault.jpg'
                 },
                 {
-                    id: '1cHLTH26F30Gc15735WGasV7T_KliaWz0',
-                    titulo: 'Utilizando o botão direito do mouse',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Utilizando+o+botão+direito+do+mouse'
-                },
-                {
-                    id: '1bv_eHbUXMbudsg051i_cnmhlzQaKKSOh',
-                    titulo: 'Funcionalidades de acessibilidade',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Funcionalidades+de+acessibilidade'
+                    id: 'K4TOrB7at0Y',
+                    titulo: 'Acessibilidade no Sistema Operacional',
+                    thumbnail: 'https://img.youtube.com/vi/K4TOrB7at0Y/hqdefault.jpg'
                 },
                 // Adicione mais vídeos conforme necessário
             ],
             'categoria3': [
                 {
-                    id: '1cgdX-oF3xBCS1YVKqKqiuOk_vx2Q3YQh',
-                    titulo: 'Configurações de segurança do Windows 10',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Configurações+de+segurança+do+Windows+10'
+                    id: 'hT_nvWreIhg',
+                    titulo: 'Configurações de Segurança no Windows 10',
+                    thumbnail: 'https://img.youtube.com/vi/hT_nvWreIhg/hqdefault.jpg'
                 },
                 {
-                    id: '1cjLjdq4WVtxwLC9RcEwTRPSJRbUYi00o',
-                    titulo: 'Criando uma senha forte para sua conta',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Criando+uma+senha+forte'
+                    id: 'kXYiU_JCYtU',
+                    titulo: 'Criando Senhas Fortes',
+                    thumbnail: 'https://img.youtube.com/vi/kXYiU_JCYtU/hqdefault.jpg'
                 },
                 {
-                    id: '1cloeB23sPyvMCDadw6UnXdROldLx2ThL',
-                    titulo: 'Gerenciando contas no Windows 10',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Gerenciando+contas+no+Windows+10'
+                    id: 'CevxZvSJLk8',
+                    titulo: 'Gerenciando Contas no Windows 10',
+                    thumbnail: 'https://img.youtube.com/vi/CevxZvSJLk8/hqdefault.jpg'
                 },
                 {
-                    id: '1cZz4WqcNwCCj9kxwd-3BGA-aOYFf9JE_',
-                    titulo: 'Configurando a rede Wi-Fi com o Windows 10',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Configurando+Wi-Fi+no+Windows+10'
+                    id: 'fLexgOxsZu0',
+                    titulo: 'Configurando Rede Wi-Fi',
+                    thumbnail: 'https://img.youtube.com/vi/fLexgOxsZu0/hqdefault.jpg'
                 },
                 {
-                    id: '1cg7ylYH4K5Sa4MD7LyaGEgC6TOJmuN6B',
-                    titulo: 'Conectando-se à internet',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Conectando-se+à+internet'
+                    id: 'RgKAFK5djSk',
+                    titulo: 'Conectando-se à Internet',
+                    thumbnail: 'https://img.youtube.com/vi/RgKAFK5djSk/hqdefault.jpg'
                 },
                 {
-                    id: '1cg9wiK59o9OPxxXjmbEIcfw4SMUtQjY6',
-                    titulo: 'Mantendo o sistema operacional atualizado',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Mantendo+OS+atualizado'
+                    id: 'YQHsXMglC9A',
+                    titulo: 'Mantendo o Sistema Atualizado',
+                    thumbnail: 'https://img.youtube.com/vi/YQHsXMglC9A/hqdefault.jpg'
                 },
                 // Adicione mais vídeos conforme necessário
             ],
             'categoria4': [
                 {
-                    id: '1dQrncQ6yr427NBRX0mIqmeUOykLMOPwN',
-                    titulo: 'O que são aplicativos?',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=O+que+são+aplicativos?'
+                    id: 'eVTXPUF4Oz4',
+                    titulo: 'Introdução aos Aplicativos',
+                    thumbnail: 'https://img.youtube.com/vi/eVTXPUF4Oz4/hqdefault.jpg'
                 },
                 {
-                    id: '1d56kKiCuFVCD6zcufCyeI-yr9k1UdhzI',
-                    titulo: 'Instalar e pesquisar aplicativos',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Instalar+e+pesquisar+aplicativos'
+                    id: 'YQHsXMglC9A',
+                    titulo: 'Instalando e Pesquisando Aplicativos',
+                    thumbnail: 'https://img.youtube.com/vi/YQHsXMglC9A/hqdefault.jpg'
                 },
                 {
-                    id: '1d30gPmrOJLx23jhHxGGe-cZ9OkAlt-4S',
-                    titulo: 'Aprendendo a usar um novo aplicativo',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Aprendendo+a+usar+um+novo+aplicativo'
+                    id: 'ktvTqknDobU',
+                    titulo: 'Aprendendo Novos Aplicativos',
+                    thumbnail: 'https://img.youtube.com/vi/ktvTqknDobU/hqdefault.jpg'
                 },
                 {
-                    id: '1d0ZWJL0qU0icoOer9q6v1j_x_OSRqiuP',
-                    titulo: 'Aplicativos em dispositivos móveis',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Aplicativos+em+dispositivos+móveis'
+                    id: 'RgKAFK5djSk',
+                    titulo: 'Aplicativos em Dispositivos Móveis',
+                    thumbnail: 'https://img.youtube.com/vi/RgKAFK5djSk/hqdefault.jpg'
                 },
                 {
-                    id: '1dIFcfYmzfharOlX1ToKc3oXjY4a8m0Vr',
-                    titulo: 'Abrir e salvar arquivos',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Abrir+e+salvar+arquivos'
+                    id: '9bZkp7q19f0',
+                    titulo: 'Abrindo e Salvando Arquivos',
+                    thumbnail: 'https://img.youtube.com/vi/9bZkp7q19f0/hqdefault.jpg'
                 },
                 {
-                    id: '1cx_23WsZWd70rHpAV98rqL9ImPowSkYt',
-                    titulo: 'Microsoft Office 2019 versus Microsoft office 365',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Office+2019+vs+Office+365'
+                    id: 'hT_nvWreIhg',
+                    titulo: 'Microsoft Office 2019 vs Office 365',
+                    thumbnail: 'https://img.youtube.com/vi/hT_nvWreIhg/hqdefault.jpg'
                 },
                 {
-                    id: '1cwAoupYCy-pUZI7OghJlWF8GMVzwL0ww',
-                    titulo: 'Microsoft Office 365 online gratuito',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Office+365+online+gratuito'
+                    id: 'K4TOrB7at0Y',
+                    titulo: 'Microsoft Office 365 Online Gratuito',
+                    thumbnail: 'https://img.youtube.com/vi/K4TOrB7at0Y/hqdefault.jpg'
                 },
                 // Adicione mais vídeos conforme necessário
             ],
             'categoria5': [
                 {
-                    id: '1dUgnjR11VRkRYi7oFJOC15LhjNNgNOMe',
+                    id: 'kXYiU_JCYtU',
                     titulo: 'Utilizando Word Online',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Utilizando+Word+Online'
+                    thumbnail: 'https://img.youtube.com/vi/kXYiU_JCYtU/hqdefault.jpg'
                 },
                 {
-                    id: '1d_qV-cZ8Kj4L5-Mr5nHSQ_zTFX_8aiuw',
-                    titulo: 'Criando e salvando documentos com Word',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Criando+e+salvando+documentos+com+Word'
+                    id: 'eVTXPUF4Oz4',
+                    titulo: 'Criando e Salvando Documentos com Word',
+                    thumbnail: 'https://img.youtube.com/vi/eVTXPUF4Oz4/hqdefault.jpg'
                 },
                 {
-                    id: '1dXuOKtFK8nxONg992QyyyNXzdtX_SnYa',
-                    titulo: 'Formatação de texto utilizando o Word',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Formatação+de+texto+utilizando+o+Word'
+                    id: 'RgKAFK5djSk',
+                    titulo: 'Formatação de Texto no Word',
+                    thumbnail: 'https://img.youtube.com/vi/RgKAFK5djSk/hqdefault.jpg'
                 },
                 {
-                    id: '1dV3ez7d_aj6lSHdUawZYu42_eZwUUQ99',
-                    titulo: 'Inserindo imagens e outros elementos',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Inserindo+imagens+e+outros+elementos'
+                    id: '9bZkp7q19f0',
+                    titulo: 'Inserindo Imagens no Word',
+                    thumbnail: 'https://img.youtube.com/vi/9bZkp7q19f0/hqdefault.jpg'
                 },
                 {
-                    id: '1dWpNG2VqngIbysf3iYsZdMpv7rScY1yj',
-                    titulo: 'Encontrar e substituir palavras',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Encontrar+e+substituir+palavras'
+                    id: 'hT_nvWreIhg',
+                    titulo: 'Encontrar e Substituir no Word',
+                    thumbnail: 'https://img.youtube.com/vi/hT_nvWreIhg/hqdefault.jpg'
                 },
                 {
-                    id: '1dXCzt_aVt9KfQK70ljFtuxZVUJ-DcTuH',
-                    titulo: 'Revisão gramatical no Word',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Revisão+gramatical+no+Word'
+                    id: 'K4TOrB7at0Y',
+                    titulo: 'Revisão Gramatical no Word',
+                    thumbnail: 'https://img.youtube.com/vi/K4TOrB7at0Y/hqdefault.jpg'
                 },
                 // Adicione mais vídeos conforme necessário
             ],
             'categoria6': [
                 {
-                    id: '1dhQhEyyO1Dyx7LJv62Wi-R1r3-GAgAiD',
+                    id: 'ktvTqknDobU',
                     titulo: 'Utilizando Excel Online',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Utilizando+Excel+Online'
+                    thumbnail: 'https://img.youtube.com/vi/ktvTqknDobU/hqdefault.jpg'
                 },
                 {
-                    id: '1dwf5EzwBkib-9zV3oW1CFBEBZ4SNh5Wt',
-                    titulo: 'Criando e salvando pastas de trabalho',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Criando+e+salvando+pastas+de+trabalho'
+                    id: 'eVTXPUF4Oz4',
+                    titulo: 'Criando Pastas de Trabalho no Excel',
+                    thumbnail: 'https://img.youtube.com/vi/eVTXPUF4Oz4/hqdefault.jpg'
                 },
                 {
-                    id: '1dkCrS7qvWjwfmu_tnyQb8Hy0zcMBSfQi',
-                    titulo: 'Utilizando fórmulas básicas no Excel',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Utilizando+fórmulas+básicas+no+Excel'
+                    id: '9bZkp7q19f0',
+                    titulo: 'Fórmulas Básicas no Excel',
+                    thumbnail: 'https://img.youtube.com/vi/9bZkp7q19f0/hqdefault.jpg'
                 },
                 {
-                    id: '1dnylVPQ0VrGy1HYUrwsTTmqcXKFH--Ra',
-                    titulo: 'Criando uma tabela simples com Excel',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Criando+uma+tabela+simples+com+Excel'
+                    id: 'kXYiU_JCYtU',
+                    titulo: 'Criando Tabelas Simples no Excel',
+                    thumbnail: 'https://img.youtube.com/vi/kXYiU_JCYtU/hqdefault.jpg'
                 },
                 {
-                    id: '1ditFGulR-HtSQnwjK6S0tRNSG-oUUGcs',
-                    titulo: 'Modificando abas ou planilhas',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Modificando+abas+ou+planilhas'
+                    id: 'RgKAFK5djSk',
+                    titulo: 'Modificando Abas no Excel',
+                    thumbnail: 'https://img.youtube.com/vi/RgKAFK5djSk/hqdefault.jpg'
                 },
                 {
-                    id: '1dlpwV3lTUL8rmh1pu0cx2ZRr-azUfs8a',
-                    titulo: 'Validação e formatação de conteúdo',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Validação+e+formatação+de+conteúdo'
+                    id: 'hT_nvWreIhg',
+                    titulo: 'Validação e Formatação no Excel',
+                    thumbnail: 'https://img.youtube.com/vi/hT_nvWreIhg/hqdefault.jpg'
                 },
                 // Adicione mais vídeos conforme necessário
             ],
             'categoria7': [
                 {
-                    id: '1e1bnUh0GK84UEh-dBZrQIs3E28FVQUhM',
+                    id: 'L_jWHffIx5E',
                     titulo: 'Utilizando PowerPoint Online',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Utilizando+PowerPoint+Online'
+                    thumbnail: 'https://img.youtube.com/vi/L_jWHffIx5E/hqdefault.jpg'
                 },
                 {
-                    id: '1e9YFKdAGFScPfoxp5apD8c3U4P_ob_o7',
-                    titulo: 'Criando e salvando apresentações',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Criando+e+salvando+apresentações'
+                    id: 'VbfpW0pbvaU',
+                    titulo: 'Criando Apresentações no PowerPoint',
+                    thumbnail: 'https://img.youtube.com/vi/VbfpW0pbvaU/hqdefault.jpg'
                 },
                 {
-                    id: '1e46ibKEtrSeBxTSbTKxqzxuFGmPx9GNh',
-                    titulo: 'Fazer ou gravar uma apresentação de slides',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Fazer+ou+gravar+uma+apresentação+de+slides'
+                    id: 'e-ORhEE9VVg',
+                    titulo: 'Gravando Apresentações de Slides',
+                    thumbnail: 'https://img.youtube.com/vi/e-ORhEE9VVg/hqdefault.jpg'
                 },
                 {
-                    id: '1e8Hz_MCHVNBp7hUbTD9Zm56Ztv5I3CDb',
-                    titulo: 'Organizando slides com PowerPoint',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Organizando+slides+com+PowerPoint'
+                    id: 'fRh_vgS2dFE',
+                    titulo: 'Organizando Slides no PowerPoint',
+                    thumbnail: 'https://img.youtube.com/vi/fRh_vgS2dFE/hqdefault.jpg'
                 },
                 {
-                    id: '1e7LB2r_xgghqmKZp1Lj_rRrEjGK0G3Mt',
-                    titulo: 'Trabalhando temas e imagens no PowerPoint',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Trabalhando+temas+e+imagens+no+PowerPoint'
+                    id: 'ktvTqknDobU',
+                    titulo: 'Trabalhando com Temas no PowerPoint',
+                    thumbnail: 'https://img.youtube.com/vi/ktvTqknDobU/hqdefault.jpg'
                 },
                 {
-                    id: '1e6dLp-qkWZocV_RLgSZT4q27s8c3EmTm',
-                    titulo: 'Utilizando o assistente de design',
-                    thumbnail: 'https://via.placeholder.com/160x90.png?text=Utilizando+o+assistente+de+design'
+                    id: 'kXYiU_JCYtU',
+                    titulo: 'Assistente de Design no PowerPoint',
+                    thumbnail: 'https://img.youtube.com/vi/kXYiU_JCYtU/hqdefault.jpg'
                 },
                 // Adicione mais vídeos conforme necessário
             ],
@@ -855,7 +863,7 @@
         // Função para carregar o vídeo em destaque
         function carregarVideoDestaque(videoId) {
             const videoDestaque = document.getElementById('videoDestaque');
-            videoDestaque.src = `https://drive.google.com/file/d/${videoId}/preview?autoplay=1`;
+            videoDestaque.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
         }
 
         // Função para carregar a lista de vídeos
@@ -929,7 +937,7 @@
         function abrirModal(videoId) {
             const modal = document.getElementById('videoModal');
             const iframeModal = document.getElementById('modalIframe');
-            iframeModal.src = `https://drive.google.com/file/d/${videoId}/preview?autoplay=1`;
+            iframeModal.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
             modal.classList.add('show');
 
             // Definir foco no modal para acessibilidade
