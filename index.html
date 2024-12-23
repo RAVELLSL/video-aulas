@@ -178,7 +178,7 @@
             display: none; /* Oculto por padrão */
             flex: 1;
             padding: 20px;
-            overflow-y: auto;
+            overflow: hidden;
             display: flex;
             flex-direction: row;
             gap: 20px;
@@ -190,7 +190,7 @@
             flex: 3;
             background-color: #000;
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 */
+            padding-bottom: 35%; /* Aspect Ratio Ajustado: ~16:5 */
             height: 0;
             border-radius: 12px;
             overflow: hidden;
@@ -223,10 +223,10 @@
 
         .video-item {
             display: flex;
-            gap: 15px;
+            align-items: center;
+            padding: 10px;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.3s ease;
-            padding: 10px;
             border-radius: 8px;
             background-color: #fff;
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
@@ -245,28 +245,12 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        .video-thumbnail {
-            width: 160px;
-            height: 90px; /* 16:9 */
-            background-color: #000;
-            flex-shrink: 0;
-            background-size: cover;
-            background-position: center;
-            border-radius: 8px;
-            position: relative;
+        /* Esconder as miniaturas dos vídeos na lista */
+        .lista-videos .video-thumbnail {
+            display: none;
         }
 
-        .video-thumbnail::after {
-            content: '▶';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 24px;
-            color: rgba(255, 255, 255, 0.8);
-            pointer-events: none;
-        }
-
+        /* Ajustar as informações do vídeo para ocupar todo o espaço */
         .video-info {
             display: flex;
             flex-direction: column;
@@ -278,10 +262,9 @@
             font-size: 16px;
             font-weight: 500;
             color: #333;
-            margin-bottom: 5px;
-            height: 40px;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            margin: 0;
+            height: auto;
+            text-align: left;
         }
 
         .video-category {
@@ -340,11 +323,6 @@
 
         /* Responsividade */
         @media (max-width: 1024px) {
-            .video-thumbnail {
-                width: 140px;
-                height: 78.75px;
-            }
-
             .videos-view {
                 flex-direction: row;
             }
@@ -385,12 +363,7 @@
 
             .video-destaque {
                 height: 200px;
-                padding-bottom: 56.25%;
-            }
-
-            .video-thumbnail {
-                width: 120px;
-                height: 67.5px;
+                padding-bottom: 35%; /* Manter o aspect ratio ajustado */
             }
 
             .lista-videos {
@@ -431,18 +404,12 @@
 
             .video-item {
                 flex-direction: column;
-                align-items: center;
-                text-align: center;
+                align-items: flex-start;
+                text-align: left;
             }
 
             .video-info {
-                align-items: center;
-            }
-
-            .video-thumbnail {
-                width: 100%;
-                height: auto;
-                aspect-ratio: 16 / 9;
+                align-items: flex-start;
             }
 
             .lista-videos {
@@ -889,12 +856,6 @@
                     videoItem.classList.add('video-atual');
                 }
 
-                // Cria a miniatura
-                const thumbnail = document.createElement('div');
-                thumbnail.classList.add('video-thumbnail');
-                thumbnail.style.backgroundImage = `url('${video.thumbnail}')`;
-                thumbnail.setAttribute('aria-label', `Miniatura do vídeo ${video.titulo}`);
-
                 // Cria as informações do vídeo
                 const videoInfo = document.createElement('div');
                 videoInfo.classList.add('video-info');
@@ -910,7 +871,6 @@
                 videoInfo.appendChild(videoTitle);
                 videoInfo.appendChild(videoCategory);
 
-                videoItem.appendChild(thumbnail);
                 videoItem.appendChild(videoInfo);
 
                 // Adiciona o vídeo à lista
