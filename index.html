@@ -10,8 +10,8 @@
     <!-- Incorporando Normalize.css para consistência entre navegadores -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <style>
-        /* Box-sizing Global */
-        *, *::before, *::after {
+              /* Box-sizing Global */
+              *, *::before, *::after {
             box-sizing: border-box;
         }
 
@@ -31,12 +31,12 @@
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            display: flex;               /* Layout em flex */
+            flex-direction: column;      /* Coluna (header, main, footer) */
+            min-height: 100vh;           /* Ocupa pelo menos a altura da tela */
             color: #333;
             margin: 0;
-            padding: 0; /* Remover espaçamento padrão */
+            padding: 0;
         }
 
         /* Header */
@@ -47,7 +47,7 @@
             flex-direction: column;
             align-items: center;
             border-bottom: 1px solid #e0e0e0;
-            position: fixed;
+            position: fixed; /* Header fixo */
             width: 100%;
             top: 0;
             z-index: 1000;
@@ -61,8 +61,8 @@
             width: 100%;
             max-width: 800px;
             margin-top: 10px;
-            flex-wrap: wrap; /* Permite quebra de linha para dispositivos menores */
-            justify-content: center; /* Centraliza os itens */
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         /* Botão de retorno */
@@ -77,11 +77,11 @@
 
         /* Título em Destaque */
         .titulo {
-            font-size: 28px; /* Reduzido de 32px para melhor visualização em telas menores */
+            font-size: 28px;
             font-weight: 700;
-            color: #000; /* Preto */
+            color: #000;
             margin: 0;
-            text-align: center; /* Garantir centralização em dispositivos móveis */
+            text-align: center;
         }
 
         /* Barra de busca */
@@ -90,8 +90,8 @@
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            width: 100%; /* Garantir que a barra ocupe 100% da largura disponível */
-            max-width: 600px; /* Limita a largura máxima */
+            width: 100%;
+            max-width: 600px;
         }
 
         .search-bar input {
@@ -105,8 +105,8 @@
         .search-bar button {
             padding: 10px 20px;
             border: none;
-            background-color: #000; /* Preto */
-            color: #fff; /* Branco para contraste */
+            background-color: #000;
+            color: #fff;
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s ease;
@@ -114,16 +114,14 @@
         }
 
         .search-bar button:hover {
-            background-color: #333; /* Tom mais escuro ao passar o mouse */
+            background-color: #333;
         }
 
         /* Container principal */
         main {
-            display: flex;
-            margin-top: 120px; /* Ajustado para o header fixo */
+            margin-top: 120px; /* Espaço para o header fixo */
             flex: 1;
-            overflow: hidden;
-            padding: 20px; /* Espaço entre a barra de busca e o conteúdo */
+            padding: 20px;
         }
 
         /* Tela de Categorias */
@@ -182,11 +180,10 @@
 
         /* Área Principal de Vídeos */
         .videos-view {
-            display: none; /* Oculto por padrão */
+            /* MANTÉM APENAS display: none; para iniciar oculta */
+            display: none;  /* Oculto por padrão */
             flex: 1;
             padding: 20px;
-            overflow: hidden;
-            display: flex;
             flex-direction: row;
             gap: 20px;
         }
@@ -196,7 +193,7 @@
             flex: 3;
             background-color: #000;
             position: relative;
-            padding-bottom: 35%; /* Aspect Ratio Ajustado: ~16:5 */
+            padding-bottom: 35%;
             height: 0;
             border-radius: 12px;
             overflow: hidden;
@@ -223,7 +220,7 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-            max-height: calc(100vh - 160px); /* Ajusta a altura considerando o header */
+            max-height: calc(100vh - 160px);
             overflow-y: auto;
         }
 
@@ -251,12 +248,10 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        /* Esconder as miniaturas dos vídeos na lista */
         .lista-videos .video-thumbnail {
             display: none;
         }
 
-        /* Ajustar as informações do vídeo para ocupar todo o espaço */
         .video-info {
             display: flex;
             flex-direction: column;
@@ -280,7 +275,7 @@
 
         /* Modal para Reprodução de Vídeo (Opcional) */
         .modal {
-            display: none; /* Oculto por padrão */
+            display: none;
             position: fixed;
             z-index: 2000;
             left: 0;
@@ -355,7 +350,7 @@
 
         @media (max-width: 768px) {
             header {
-                padding: 10px 15px; /* Reduzido para melhor adaptação em telas menores */
+                padding: 10px 15px;
             }
 
             .header-search-container {
@@ -365,33 +360,32 @@
             }
 
             .titulo {
-                font-size: 24px; /* Reduzido para melhor visualização */
+                font-size: 24px;
             }
 
             .search-bar {
                 margin-top: 10px;
                 flex-direction: column;
-                width: 100%; /* Garantir que ocupe toda a largura disponível */
-                max-width: none; /* Remove o limite de largura */
+                width: 100%;
+                max-width: none;
             }
 
             .search-bar input,
             .search-bar button {
-                font-size: 14px; /* Reduzido para melhor adaptação */
+                font-size: 14px;
                 padding: 10px;
             }
 
             .search-bar button {
-                border-radius: 0; /* Removido arredondamento para alinhamento vertical */
+                border-radius: 0;
             }
         }
 
         @media (max-width: 480px) {
             .titulo {
-                font-size: 20px; /* Ainda menor para telas muito pequenas */
+                font-size: 20px;
             }
 
-            /* Ajuste no container de busca e botão de voltar */
             .header-search-container {
                 flex-direction: row;
                 justify-content: center;
@@ -399,31 +393,31 @@
             }
 
             .back-button {
-                display: block; /* Mostrar botão de volta no mobile */
-                font-size: 20px; /* Tamanho ajustado */
-                margin-right: 10px; /* Espaço entre o botão de voltar e a barra de busca */
+                display: block;
+                font-size: 20px;
+                margin-right: 10px;
             }
 
             .search-bar {
                 flex-direction: row;
-                width: auto; /* Ajusta para ocupar apenas o espaço necessário */
-                max-width: 70%; /* Limita a largura da barra de busca */
+                width: auto;
+                max-width: 70%;
             }
 
             .search-bar input {
-                font-size: 14px; /* Ajustado para melhor legibilidade em telas pequenas */
-                padding: 8px 10px; /* Padding ajustado */
+                font-size: 14px;
+                padding: 8px 10px;
             }
 
             .search-bar button {
-                font-size: 14px; /* Ajustado para melhor legibilidade */
-                padding: 8px 10px; /* Padding ajustado */
-                border-radius: 0 12px 12px 0; /* Ajuste no arredondamento */
+                font-size: 14px;
+                padding: 8px 10px;
+                border-radius: 0 12px 12px 0;
             }
 
             .categoria {
-                width: 100%; /* Ocupa toda a largura disponível */
-                padding: 20px 10px; /* Padding reduzido para melhor adaptação */
+                width: 100%;
+                padding: 20px 10px;
             }
 
             .categorias-list {
@@ -446,16 +440,16 @@
             }
 
             .video-title {
-                font-size: 14px; /* Fonte menor para melhor leitura */
+                font-size: 14px;
                 height: auto;
             }
 
             .video-category {
-                font-size: 12px; /* Fonte menor */
+                font-size: 12px;
             }
 
             main {
-                margin-top: 160px; /* Ajuste para header maior em mobile */
+                margin-top: 160px;
                 flex-direction: column;
             }
 
@@ -464,15 +458,14 @@
             }
 
             .video-destaque {
-                padding-bottom: 35%; /* Manter o aspect ratio ajustado */
-                height: 0; /* Removido height fixo para manter a proporção */
+                padding-bottom: 35%;
+                height: 0;
             }
 
             .lista-videos {
                 max-height: none;
             }
 
-            /* Ajuste do Rodapé para telas pequenas */
             footer {
                 padding: 10px;
             }
@@ -566,7 +559,7 @@
         const categorias = {
             'categoria1': [
                 {
-                    id: '1bllGB-UZNZJtl1WwAJ-HR_fdBFo7q5G_', // Substitua pelo ID real do Google Drive
+                    id: '1bllGB-UZNZJtl1WwAJ-HR_fdBFo7q5G_',
                     titulo: 'O que é um computador?',
                     thumbnail: 'https://drive.google.com/thumbnail?id=1bllGB-UZNZJtl1WwAJ-HR_fdBFo7q5G_'
                 },
@@ -590,7 +583,6 @@
                     titulo: 'Conectando dispositivos de bluetooth',
                     thumbnail: 'https://drive.google.com/thumbnail?id=1bWR0FhgntS0fA3TIlTjQ_QVY0c6T5oqD'
                 },
-                // Adicione mais vídeos conforme necessário
             ],
             'categoria2': [
                 {
@@ -628,7 +620,6 @@
                     titulo: 'Funcionalidades de acessibilidade',
                     thumbnail: 'https://drive.google.com/thumbnail?id=1bv_eHbUXMbudsg051i_cnmhlzQaKKSOh'
                 },
-                // Adicione mais vídeos conforme necessário
             ],
             'categoria3': [
                 {
@@ -661,7 +652,6 @@
                     titulo: 'Mantendo o sistema operacional atualizado',
                     thumbnail: 'https://drive.google.com/thumbnail?id=1cg9wiK59o9OPxxXjmbEIcfw4SMUtQjY6'
                 },
-                // Adicione mais vídeos conforme necessário
             ],
             'categoria4': [
                 {
@@ -699,7 +689,6 @@
                     titulo: 'Microsoft Office 365 online gratuito',
                     thumbnail: 'https://drive.google.com/thumbnail?id=1cwAoupYCy-pUZI7OghJlWF8GMVzwL0ww'
                 },
-                // Adicione mais vídeos conforme necessário
             ],
             'categoria5': [
                 {
@@ -732,7 +721,6 @@
                     titulo: 'Revisão gramatical no Word',
                     thumbnail: 'https://drive.google.com/thumbnail?id=1dXCzt_aVt9KfQK70ljFtuxZVUJ-DcTuH'
                 },
-                // Adicione mais vídeos conforme necessário
             ],
             'categoria6': [
                 {
@@ -765,7 +753,6 @@
                     titulo: 'Validação e formatação de conteúdo',
                     thumbnail: 'https://drive.google.com/thumbnail?id=1dlpwV3lTUL8rmh1pu0cx2ZRr-azUfs8a'
                 },
-                // Adicione mais vídeos conforme necessário
             ],
             'categoria7': [
                 {
@@ -798,9 +785,7 @@
                     titulo: 'Utilizando o assistente de design',
                     thumbnail: 'https://drive.google.com/thumbnail?id=1e6dLp-qkWZocV_RLgSZT4q27s8c3EmTm'
                 },
-                // Adicione mais vídeos conforme necessário
             ],
-            // Adicione mais categorias conforme necessário
         };
 
         // Mapeamento de nomes das categorias
@@ -1025,9 +1010,9 @@
 
         function filtrarCategorias(query) {
             const categoriasList = document.querySelector('.categorias-list');
-            const categorias = categoriasList.querySelectorAll('.categoria');
+            const listaDeCategorias = categoriasList.querySelectorAll('.categoria');
 
-            categorias.forEach(categoria => {
+            listaDeCategorias.forEach(categoria => {
                 const titulo = categoria.querySelector('h3').textContent.toLowerCase();
                 if(titulo.includes(query)) {
                     categoria.style.display = 'flex';
@@ -1049,6 +1034,5 @@
             }
         });
     </script>
-
 </body>
 </html>
