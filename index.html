@@ -371,80 +371,119 @@
         }
 
         @media (max-width: 480px) {
-            .titulo {
-                font-size: 20px; /* Ainda menor para telas muito pequenas */
-            }
+    /* Ajustes gerais para telas pequenas */
+    .titulo {
+        font-size: 20px; /* Fonte menor para melhor adaptação */
+    }
 
-            .search-bar {
-                flex-direction: column;
-            }
+    .search-bar {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px; /* Espaçamento entre os elementos */
+    }
 
-            .search-bar input,
-            .search-bar button {
-                font-size: 12px; /* Fonte menor para melhor adaptação */
-                padding: 8px; /* Padding reduzido */
-            }
+    .search-bar input {
+        width: 90%; /* Reduz a largura do campo de busca */
+        font-size: 12px; /* Fonte menor para melhor adaptação */
+        padding: 8px; /* Padding reduzido */
+    }
 
-            .search-bar button {
-                border-radius: 0; /* Removido arredondamento */
-            }
+    .search-bar button {
+        width: auto; /* Define largura automática */
+        font-size: 14px; /* Ajusta o tamanho da fonte */
+        padding: 10px 20px; /* Espaçamento interno maior */
+        border-radius: 20px; /* Mantém o botão arredondado */
+        margin: 0 auto; /* Centraliza o botão */
+    }
 
-            .categoria {
-                width: 100%; /* Ocupa toda a largura disponível */
-                padding: 20px 10px; /* Padding reduzido para melhor adaptação */
-            }
+    .categoria {
+        width: 90%; /* Reduz a largura dos cards */
+        padding: 15px 10px; /* Ajusta o espaçamento interno */
+        text-align: center; /* Centraliza o texto no card */
+    }
 
-            .categorias-list {
-                flex-direction: column;
-                gap: 20px;
-            }
+    .categorias-view {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Centraliza horizontalmente */
+        text-align: center; /* Centraliza o texto */
+    }
 
-            .video-item {
-                flex-direction: column;
-                align-items: flex-start;
-                text-align: left;
-            }
+    .categorias-view h1 {
+        font-size: 20px; /* Ajusta o tamanho da fonte para dispositivos menores */
+        margin-bottom: 20px; /* Espaço entre o título e os cards */
+        text-align: center; /* Garante a centralização do texto */
+    }
 
-            .video-info {
-                align-items: flex-start;
-            }
+    .categorias-list {
+        display: flex;
+        flex-direction: column; /* Disposição vertical para os cards */
+        align-items: center; /* Centraliza os cards horizontalmente */
+        gap: 15px; /* Espaço entre os cards */
+        width: 100%; /* Garante que ocupe toda a largura disponível */
+    }
 
-            .lista-videos {
-                gap: 15px;
-            }
+    .videos-view {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px; /* Espaçamento entre os elementos principais */
+    }
 
-            .video-title {
-                font-size: 14px; /* Fonte menor para melhor leitura */
-                height: auto;
-            }
+    .videos-view .search-bar {
+        flex-direction: column;
+        align-items: center; /* Centraliza horizontalmente */
+        gap: 10px; /* Espaçamento entre o input e o botão */
+        margin-bottom: 20px; /* Espaço entre a barra de busca e os vídeos */
+    }
 
-            .video-category {
-                font-size: 12px; /* Fonte menor */
-            }
+    .videos-view .search-bar input {
+        width: 90%; /* Reduz a largura do campo de busca */
+        font-size: 12px; /* Fonte menor */
+        padding: 8px; /* Padding ajustado */
+    }
 
-            .back-button {
-                display: block; /* Mostrar botão de volta no mobile */
-                font-size: 20px; /* Tamanho ajustado */
-            }
+    .videos-view .search-bar button {
+        width: auto; /* Define largura automática */
+        font-size: 14px; /* Ajusta o tamanho da fonte */
+        padding: 10px 20px; /* Espaço interno do botão */
+        border-radius: 20px; /* Arredondamento para destaque */
+        margin: 0 auto; /* Centraliza o botão */
+    }
 
-            main {
-                margin-top: 160px; /* Ajuste para header maior em mobile */
-                flex-direction: column;
-            }
+    .video-destaque {
+        width: 90%; /* Ajusta a largura do vídeo */
+        height: 200px; /* Altura ajustada */
+        padding-bottom: 35%; /* Mantém o aspect ratio ajustado */
+        border-radius: 12px;
+        overflow: hidden;
+    }
 
-            .videos-view {
-                flex-direction: column;
-            }
+    .lista-videos {
+        gap: 15px;
+        width: 100%; /* Garante que ocupe toda a largura disponível */
+    }
 
-            .video-destaque {
-                height: 200px;
-                padding-bottom: 35%; /* Manter o aspect ratio ajustado */
-            }
+    .video-item {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        padding: 10px;
+    }
 
-            .lista-videos {
-                max-height: none;
-            }
-        }
+    .video-info {
+        align-items: flex-start;
+        width: 100%; /* Garante que ocupe toda a largura disponível */
+    }
+
+    .video-title {
+        font-size: 14px; /* Fonte menor para melhor leitura */
+    }
+
+    .video-category {
+        font-size: 12px; /* Fonte menor */
+    }
+}
+
     </style>
 </head>
 <body>
