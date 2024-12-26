@@ -62,6 +62,7 @@
             max-width: 800px;
             margin-top: 10px;
             flex-wrap: wrap; /* Permite quebra de linha para dispositivos menores */
+            justify-content: center; /* Centraliza os itens */
         }
 
         /* Botão de retorno */
@@ -85,16 +86,16 @@
 
         /* Barra de busca */
         .search-bar {
-            flex: 1;
             display: flex;
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             width: 100%; /* Garantir que a barra ocupe 100% da largura disponível */
+            max-width: 600px; /* Limita a largura máxima */
         }
 
         .search-bar input {
-            width: 100%;
+            flex: 1;
             padding: 10px 20px;
             border: none;
             outline: none;
@@ -326,6 +327,21 @@
             color: #ff4757;
         }
 
+        /* Rodapé */
+        footer {
+            background-color: #fff;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 16px;
+            color: #555;
+        }
+
         /* Responsividade */
         @media (max-width: 1024px) {
             .videos-view {
@@ -356,6 +372,7 @@
                 margin-top: 10px;
                 flex-direction: column;
                 width: 100%; /* Garantir que ocupe toda a largura disponível */
+                max-width: none; /* Remove o limite de largura */
             }
 
             .search-bar input,
@@ -374,18 +391,34 @@
                 font-size: 20px; /* Ainda menor para telas muito pequenas */
             }
 
+            /* Ajuste no container de busca e botão de voltar */
+            .header-search-container {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .back-button {
+                display: block; /* Mostrar botão de volta no mobile */
+                font-size: 20px; /* Tamanho ajustado */
+                margin-right: 10px; /* Espaço entre o botão de voltar e a barra de busca */
+            }
+
             .search-bar {
-                flex-direction: column;
+                flex-direction: row;
+                width: auto; /* Ajusta para ocupar apenas o espaço necessário */
+                max-width: 70%; /* Limita a largura da barra de busca */
             }
 
-            .search-bar input,
-            .search-bar button {
+            .search-bar input {
                 font-size: 14px; /* Ajustado para melhor legibilidade em telas pequenas */
-                padding: 10px; /* Padding mantido para área clicável adequada */
+                padding: 8px 10px; /* Padding ajustado */
             }
 
             .search-bar button {
-                border-radius: 0; /* Removido arredondamento */
+                font-size: 14px; /* Ajustado para melhor legibilidade */
+                padding: 8px 10px; /* Padding ajustado */
+                border-radius: 0 12px 12px 0; /* Ajuste no arredondamento */
             }
 
             .categoria {
@@ -421,12 +454,6 @@
                 font-size: 12px; /* Fonte menor */
             }
 
-            .back-button {
-                display: block; /* Mostrar botão de volta no mobile */
-                font-size: 20px; /* Tamanho ajustado */
-                align-self: flex-start; /* Alinhar à esquerda */
-            }
-
             main {
                 margin-top: 160px; /* Ajuste para header maior em mobile */
                 flex-direction: column;
@@ -443,6 +470,15 @@
 
             .lista-videos {
                 max-height: none;
+            }
+
+            /* Ajuste do Rodapé para telas pequenas */
+            footer {
+                padding: 10px;
+            }
+
+            footer p {
+                font-size: 14px;
             }
         }
     </style>
@@ -507,6 +543,11 @@
             </div>
         </section>
     </main>
+
+    <!-- Rodapé -->
+    <footer>
+        <p>&copy; 2024 Video-Aulas. Todos os direitos reservados.</p>
+    </footer>
 
     <!-- Modal para Reprodução de Vídeo (Opcional) -->
     <div id="videoModal" class="modal" onclick="fecharModal(event)" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
