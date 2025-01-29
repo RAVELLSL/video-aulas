@@ -222,6 +222,7 @@
       gap: 20px;
       padding: 0 10px;
       flex: 1; /* Ocupa o restante vertical do main */
+      flex-wrap: wrap; /* Adicionado para melhor responsividade */
     }
 
     /* Vídeo em Destaque com aspect-ratio 16/9 */
@@ -234,6 +235,8 @@
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
       transition: box-shadow 0.3s ease;
+      width: 100%; /* Garantir que ocupe 100% em telas menores */
+      max-width: 800px; /* Limitar largura máxima */
     }
 
     .video-destaque:hover {
@@ -247,6 +250,21 @@
       width: 100%;
       height: 100%;
       border: none;
+    }
+
+    /* Botão de Play Overlay */
+    .play-button-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 60px;
+      color: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      pointer-events: all;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     /* Lista de vídeos no lado direito */
@@ -377,52 +395,33 @@
     }
 
     /* Responsividade */
-    @media (max-width: 1024px) {
+    @media (min-width: 769px) {
+      /* Telas grandes e médias: vídeo e lista lado a lado */
+      .video-list-container {
+        flex-direction: row;
+      }
+
       .lista-videos {
-        max-height: calc(100vh - 220px);
+        width: 320px;
       }
     }
 
     @media (max-width: 768px) {
-      header {
-        padding: 10px 15px;
-      }
-
-      .header-search-container {
-        flex-direction: column;
-        align-items: stretch;
-        margin-top: 5px;
-      }
-
-      .titulo {
-        font-size: 24px;
-      }
-
-      .search-bar {
-        margin-top: 10px;
-        flex-direction: column;
-        width: 100%;
-        max-width: none;
-      }
-
-      .search-bar input,
-      .search-bar button {
-        font-size: 14px;
-        padding: 10px;
-      }
-
-      .search-bar button {
-        border-radius: 0;
-      }
-
-      /* Em telas menores, vídeo e lista ficam em coluna */
+      /* Telas pequenas: vídeo e lista em coluna */
       .video-list-container {
         flex-direction: column;
       }
+
       .lista-videos {
         width: 100%;
         max-height: none;
         margin-top: 20px;
+      }
+
+      /* Ajustes na área de vídeo em destaque */
+      .video-destaque {
+        width: 100%;
+        max-width: 100%;
       }
     }
 
@@ -505,6 +504,29 @@
         font-size: 14px;
       }
     }
+
+    /* Estilos do Botão de Play Overlay */
+    .video-destaque .play-button-overlay {
+      display: flex;
+    }
+
+    @media (min-width: 769px) {
+      .video-destaque .play-button-overlay {
+        display: none; /* Ocultar em telas grandes e médias */
+      }
+    }
+
+    @media (max-width: 768px) {
+      .video-destaque .play-button-overlay {
+        display: flex; /* Mostrar em telas pequenas */
+      }
+    }
+
+    /* Estilos para o Modal */
+    .modal.show {
+      display: flex;
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -568,10 +590,14 @@
           <iframe
             id="videoDestaque"
             src=""
-            allow="autoplay; encrypted-media"
+            allow="autoplay; encrypted-media; fullscreen"
             allowfullscreen
             title="Vídeo em destaque"
           ></iframe>
+          <!-- Botão de Play Overlay -->
+          <div class="play-button-overlay" onclick="iniciarVideo()">
+            ▶️
+          </div>
         </div>
 
         <!-- Lista de Próximos Vídeos -->
@@ -614,7 +640,7 @@
         width="100%"
         height="450"
         frameborder="0"
-        allow="autoplay; encrypted-media"
+        allow="autoplay; encrypted-media; fullscreen"
         allowfullscreen
         title="Vídeo no Modal"
       ></iframe>
@@ -919,24 +945,25 @@
     // Referência para o último elemento focado antes de abrir modal (melhoria de acessibilidade)
     let lastFocusedElement = null;
 
+    // Cache de elementos do DOM
+    const categoriasView = document.querySelector(".categorias-view");
+    const videosView = document.getElementById("videosView");
+    const backButton = document.querySelector(".back-button");
+    const nomeCategoriaSelecionada = document.getElementById("nomeCategoriaSelecionada");
+    const videoDestaque = document.getElementById("videoDestaque");
+    const listaVideos = document.getElementById("listaVideos");
+    const noResultsMsg = document.getElementById("noResultsMsg");
+    const searchInput = document.querySelector(".search-bar input");
+    const searchButton = document.querySelector(".search-bar button");
+    const playButtonOverlay = document.querySelector(".play-button-overlay");
+
     /**
      * Seleciona a categoria: esconde categorias e exibe tela de vídeos
      */
     function selecionarCategoria(categoria) {
-      const categoriasView = document.querySelector(".categorias-view");
-      const videosView = document.getElementById("videosView");
-      const backButton = document.querySelector(".back-button");
-      const nomeCategoriaSelecionada = document.getElementById(
-        "nomeCategoriaSelecionada"
-      );
-
-      // Atualiza o texto com o nome da categoria selecionada
-      nomeCategoriaSelecionada.textContent =
-        nomeCategorias[categoria] || "Categoria";
-
+      nomeCategoriaSelecionada.textContent = nomeCategorias[categoria] || "Categoria";
       categoriasView.style.display = "none";
       videosView.style.display = "flex";
-
       backButton.style.display = "block";
       currentState = "videos";
 
@@ -954,12 +981,6 @@
      * - Se estiver em 'videos', volta para tela de categorias
      */
     function voltar() {
-      const categoriasView = document.querySelector(".categorias-view");
-      const videosView = document.getElementById("videosView");
-      const backButton = document.querySelector(".back-button");
-      const searchInput = document.querySelector(".search-bar input");
-      const noResultsMsg = document.getElementById("noResultsMsg");
-
       if (currentState === "search") {
         // Limpa busca e filtra categorias de volta
         searchInput.value = "";
@@ -978,17 +999,12 @@
         backButton.style.display = "none";
 
         // Limpa o vídeo em destaque
-        const videoDestaque = document.getElementById("videoDestaque");
         videoDestaque.src = "";
 
         // Limpa a lista de vídeos
-        const listaVideos = document.getElementById("listaVideos");
         listaVideos.innerHTML = "";
 
         // Limpa título da categoria
-        const nomeCategoriaSelecionada = document.getElementById(
-          "nomeCategoriaSelecionada"
-        );
         nomeCategoriaSelecionada.textContent = "";
 
         currentState = "initial";
@@ -999,15 +1015,25 @@
      * Carrega o vídeo em destaque (iframe)
      */
     function carregarVideoDestaque(videoId) {
-      const videoDestaque = document.getElementById("videoDestaque");
+      // Limpa a fonte atual antes de carregar o novo vídeo
+      videoDestaque.src = "";
+      playButtonOverlay.style.display = "flex"; // Mostra o botão de play
       videoDestaque.src = `https://drive.google.com/file/d/${videoId}/preview`;
+    }
+
+    /**
+     * Inicia a reprodução do vídeo em destaque
+     */
+    function iniciarVideo() {
+      const src = videoDestaque.src;
+      videoDestaque.src = `${src}&autoplay=1`;
+      playButtonOverlay.style.display = "none"; // Esconde o botão de play após iniciar
     }
 
     /**
      * Carrega a lista de vídeos para a categoria selecionada
      */
     function carregarListaVideos(categoria, videoAtualId) {
-      const listaVideos = document.getElementById("listaVideos");
       listaVideos.innerHTML = ""; // Limpa a lista atual
 
       categorias[categoria].forEach((video) => {
@@ -1063,7 +1089,6 @@
      * Atualiza a seleção do vídeo atual (destacado)
      */
     function atualizarVideoAtual(videoId) {
-      const listaVideos = document.getElementById("listaVideos");
       const videoItems = listaVideos.querySelectorAll(".video-item");
 
       videoItems.forEach((item) => {
@@ -1119,7 +1144,6 @@
     function filtrarCategorias(query) {
       const categoriasList = document.querySelector(".categorias-list");
       const listaDeCategorias = categoriasList.querySelectorAll(".categoria");
-      const noResultsMsg = document.getElementById("noResultsMsg");
 
       let resultadosVisiveis = 0;
 
@@ -1145,30 +1169,26 @@
      * Listeners de eventos
      ********************************************************/
     // Busca ao clicar no botão
-    document
-      .querySelector(".search-bar button")
-      .addEventListener("click", function () {
-        const query = document.querySelector(".search-bar input").value.toLowerCase();
+    searchButton.addEventListener("click", function () {
+      const query = searchInput.value.toLowerCase();
+      filtrarCategorias(query);
+      if (query.trim() !== "") {
+        currentState = "search";
+        backButton.style.display = "block";
+      }
+    });
+
+    // Busca ao pressionar Enter no input
+    searchInput.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        const query = event.target.value.toLowerCase();
         filtrarCategorias(query);
         if (query.trim() !== "") {
           currentState = "search";
-          document.querySelector(".back-button").style.display = "block";
+          backButton.style.display = "block";
         }
-      });
-
-    // Busca ao pressionar Enter no input
-    document
-      .querySelector(".search-bar input")
-      .addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-          const query = event.target.value.toLowerCase();
-          filtrarCategorias(query);
-          if (query.trim() !== "") {
-            currentState = "search";
-            document.querySelector(".back-button").style.display = "block";
-          }
-        }
-      });
+      }
+    });
 
     // Captura cliques delegados (categorias, vídeos, thumbnails)
     document.addEventListener("click", function (event) {
@@ -1224,6 +1244,53 @@
         fecharModal(event);
       }
     });
+
+    /**
+     * Inicia a reprodução do vídeo em destaque ao clicar no botão de play
+     */
+    function iniciarVideo() {
+      const src = videoDestaque.src;
+      videoDestaque.src = `${src}&autoplay=1`;
+      playButtonOverlay.style.display = "none"; // Esconde o botão de play após iniciar
+    }
+
+    /**
+     * Abre modal com o vídeo (opcional)
+     */
+    function abrirModal(videoId) {
+      const modal = document.getElementById("videoModal");
+      const iframeModal = document.getElementById("modalIframe");
+
+      // Armazena o último elemento clicado para devolver foco depois
+      lastFocusedElement = document.activeElement;
+
+      iframeModal.src = `https://drive.google.com/file/d/${videoId}/preview`;
+      modal.classList.add("show");
+
+      // Foco no modal
+      modal.setAttribute("tabindex", "-1");
+      modal.focus();
+    }
+
+    /**
+     * Fecha o modal
+     */
+    function fecharModal(event) {
+      const modal = document.getElementById("videoModal");
+      if (
+        event.target == modal ||
+        event.target.classList.contains("close-modal")
+      ) {
+        const iframeModal = document.getElementById("modalIframe");
+        iframeModal.src = "";
+        modal.classList.remove("show");
+
+        // Devolve o foco ao último elemento clicado, se existir
+        if (lastFocusedElement) {
+          lastFocusedElement.focus();
+        }
+      }
+    }
   </script>
 </body>
 </html>
