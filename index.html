@@ -1,1295 +1,554 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Video-Aulas</title>
-
-  <!-- Google Fonts -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
-    rel="stylesheet"
-  />
-
-  <!-- Normalize CSS -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-  />
-
+  <meta charset="UTF-8">
+  <title>Vídeo-Aula</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* Box-sizing Global */
-    *,
-    *::before,
-    *::after {
+    /* ----------------------------
+       Estilos Gerais - Tonalidades Claras
+       ---------------------------- */
+    * {
       box-sizing: border-box;
-    }
-
-    /* Classe para conteúdo acessível apenas para leitores de tela */
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      border: 0;
-    }
-
-    /* Estilos do Body */
-    body {
-      font-family: "Roboto", sans-serif;
-      background-color: #f4f4f4;
-      display: flex; /* Layout em flex */
-      flex-direction: column; /* Coluna (header, main, footer) */
-      min-height: 100vh; /* Ocupa pelo menos a altura da tela */
-      color: #333;
       margin: 0;
       padding: 0;
     }
 
-    /* Header */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      transition: background 0.5s, color 0.5s;
+    }
+
+    /* Cabeçalho */
     header {
-      background-color: #fff;
-      padding: 15px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      border-bottom: 1px solid #e0e0e0;
-      position: fixed; /* Header fixo */
-      width: 100%;
+      background: #ffffff;
+      border-bottom: 3px solid #00ffea;
+      padding: 20px;
+      text-align: center;
+      position: sticky;
       top: 0;
       z-index: 1000;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    .header-search-container {
-      display: flex;
-      align-items: center;
-      width: 100%;
-      max-width: 800px;
-      margin-top: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    /* Botão de retorno */
-    .back-button {
-      background: none;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-      display: none; /* Oculto por padrão */
-      margin-right: 15px;
-    }
-
-    /* Título principal */
-    .titulo {
-      font-size: 28px;
-      font-weight: 700;
-      color: #000;
+    header h1 {
       margin: 0;
-      text-align: center;
+      font-size: 2em;
+      color: #00b5ad;
     }
 
-    /* Barra de busca */
-    .search-bar {
-      display: flex;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 600px;
-    }
-
-    .search-bar input {
-      flex: 1;
-      padding: 10px 20px;
-      border: none;
+    #searchBar {
+      margin-top: 15px;
+      padding: 10px;
+      width: 80%;
+      max-width: 500px;
+      border: 2px solid #00ffea;
+      border-radius: 5px;
+      font-size: 1em;
       outline: none;
-      font-size: 16px;
+      transition: box-shadow 0.3s, border 0.3s;
     }
 
-    .search-bar button {
-      padding: 10px 20px;
-      border: none;
-      background-color: #000;
-      color: #fff;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background-color 0.3s ease;
-      border-radius: 0 20px 20px 0;
+    #searchBar:focus {
+      box-shadow: 0 0 8px 2px #00ffea;
+      border-color: #00ffea;
     }
 
-    .search-bar button:hover {
-      background-color: #333;
-    }
-
-    /* Container principal */
+    /* Layout Principal */
     main {
-      margin-top: 120px; /* Espaço para o header fixo */
-      flex: 1;
-      padding: 20px;
-    }
-
-    /* Mensagem de nenhum resultado */
-    .no-results {
-      color: #888;
-      text-align: center;
-      margin-top: 20px;
-      font-size: 18px;
-      display: none;
-    }
-
-    /* Tela de Categorias */
-    .categorias-view {
-      width: 100%;
-      padding: 40px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      overflow-y: auto;
-    }
-
-    .categorias-view h1 {
-      margin-bottom: 30px;
-      font-size: 28px;
-      color: #333;
-      text-align: center;
-    }
-
-    .categorias-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 30px;
       justify-content: center;
+      padding: 20px;
+      min-height: 80vh; /* Ajuste opcional para dar mais "corpo" à página */
+    }
+
+    /* Página Inicial - Cartões */
+    #homeView {
       width: 100%;
     }
 
-    .categoria {
-      background-color: #fff;
-      border: 1px solid #e0e0e0;
-      border-radius: 12px;
-      padding: 30px 20px;
-      width: 220px;
+    #cardsContainer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #ffffff;
+      border: 2px solid #00ffea;
+      border-radius: 10px;
+      width: 250px;
+      padding: 20px;
       text-align: center;
       cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
     }
 
-    .categoria:hover,
-    .categoria:focus {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-      outline: none;
-    }
-
-    .categoria h3 {
-      font-size: 20px;
-      font-weight: 500;
-      color: #555;
+    .card h2 {
       margin: 0;
+      font-size: 1.2em;
+      color: #00b5ad;
     }
 
-    /* Área Principal de Vídeos */
-    .videos-view {
-      /* Inicia oculta; será exibida quando uma categoria for selecionada */
+    .card:hover {
+      transform: scale(1.04);
+      background: #f0fdfd;
+      box-shadow: 0 0 10px rgba(0, 255, 234, 0.2);
+    }
+
+    /* Mensagem de nenhum resultado encontrado */
+    #noResultsMessage {
+      font-size: 1em;
+      text-align: center;
+      color: #e74c3c;
+      margin-top: 20px;
       display: none;
-      flex-direction: column; /* Primeiro o título, depois o bloco do vídeo e lista */
-      gap: 20px;
-      flex: 1;
     }
 
-    /* Nome da Categoria Selecionada (título da página de vídeos) */
-    .nome-categoria-selecionada {
-      font-size: 24px;
-      font-weight: 600;
-      margin: 0;      /* para aproximar mais do contêiner abaixo, pode ajustar a seu gosto */
-      padding: 0 10px;
-    }
-
-    /* Container que agrupa vídeo e lista em linha */
-    .video-list-container {
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start; /* Alinhar topo do vídeo com topo da lista */
-      gap: 20px;
-      padding: 0 10px;
-      flex: 1; /* Ocupa o restante vertical do main */
-      flex-wrap: wrap; /* Adicionado para melhor responsividade */
-    }
-
-    /* Vídeo em Destaque com aspect-ratio 16/9 */
-    .video-destaque {
-      flex: 1;               /* Ocupa o espaço restante da linha */
-      position: relative;
-      aspect-ratio: 16 / 9;  /* Mantém proporção 16:9 */
-      background-color: #000;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      transition: box-shadow 0.3s ease;
-      width: 100%; /* Garantir que ocupe 100% em telas menores */
-      max-width: 800px; /* Limitar largura máxima */
-    }
-
-    .video-destaque:hover {
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-    }
-
-    .video-destaque iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
+    /* Página de Exibição de Vídeo */
+    #videoView {
+      display: none; /* Ocultado por padrão */
       width: 100%;
-      height: 100%;
-      border: none;
     }
 
-    /* Botão de Play Overlay */
-    .play-button-overlay {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 60px;
-      color: rgba(255, 255, 255, 0.8);
-      cursor: pointer;
-      pointer-events: all;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    #videoTitle {
+      margin: 0 0 15px 0;
+      font-size: 1.8em;
+      color: #00b5ad;
     }
 
-    /* Lista de vídeos no lado direito */
-    .lista-videos {
-      width: 320px; /* Largura fixa da lista */
+    #videoContainerWrapper {
       display: flex;
-      flex-direction: column;
-      gap: 20px;
-      max-height: calc(100vh - 250px);
+      flex-wrap: wrap;
+    }
+
+    /* Contêiner do Vídeo Principal */
+    #mainVideoContainer {
+      flex: 3;
+      min-width: 300px;
+      padding: 10px;
+    }
+
+    #mainVideoContainer iframe {
+      width: 100%;
+      height: 400px;
+      border: 2px solid #00ffea;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0, 255, 234, 0.2);
+    }
+
+    /* Barra Lateral de Vídeos Relacionados */
+    #relatedVideosContainer {
+      flex: 1;
+      min-width: 250px;
+      background: #ffffff;
+      border: 2px solid #00ffea;
+      border-radius: 10px;
+      margin: 10px;
+      max-height: 500px;
       overflow-y: auto;
+      padding: 10px;
     }
 
-    .video-item {
-      display: flex;
-      align-items: center;
+    #relatedVideosContainer h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      color: #00b5ad;
+    }
+
+    .videoCard {
+      background: #f9f9f9;
+      border: 1px solid #00ffea;
+      border-radius: 5px;
+      margin-bottom: 10px;
       padding: 10px;
       cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.3s ease;
-      border-radius: 8px;
-      background-color: #fff;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      transition: background 0.3s;
     }
 
-    .video-item:hover,
-    .video-item:focus {
-      background-color: #f0f0f0;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      outline: none;
+    .videoCard:hover {
+      background: #f0fdfd;
     }
 
-    .video-atual {
-      background-color: #e0e0e0;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .video-thumbnail {
-      width: 80px;
-      height: 60px;
-      object-fit: cover;
-      margin-right: 15px;
-      border-radius: 4px;
-    }
-
-    .video-info {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      flex: 1;
-    }
-
-    .video-title {
-      font-size: 16px;
-      font-weight: 500;
-      color: #333;
-      margin: 0 0 5px 0;
-      text-align: left;
-    }
-
-    .video-category {
-      font-size: 14px;
-      color: #777;
-    }
-
-    /* Modal para Reprodução de Vídeo (Opcional) */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 2000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.8);
-      justify-content: center;
-      align-items: center;
-      transition: opacity 0.3s ease;
-      opacity: 0;
-    }
-
-    .modal.show {
-      display: flex;
-      opacity: 1;
-    }
-
-    .modal-content {
-      position: relative;
-      width: 90%;
-      max-width: 800px;
-      background-color: #000;
-      padding: 0;
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-      overflow: hidden;
-    }
-
-    .close-modal {
-      position: absolute;
-      top: 15px;
-      right: 25px;
-      color: #fff;
-      font-size: 35px;
-      font-weight: bold;
+    /* Botão Voltar */
+    #backButton {
+      background: #00b5ad;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
       cursor: pointer;
-      z-index: 2100;
-      transition: color 0.3s ease;
+      font-size: 1em;
+      transition: background 0.3s;
+      margin-bottom: 20px;
+      color: #fff;
+      margin-right: 10px;
     }
 
-    .close-modal:hover {
-      color: #ff4757;
+    #backButton:hover {
+      background: #009b95;
     }
 
-    /* Rodapé */
-    footer {
-      background-color: #fff;
-      padding: 20px;
-      text-align: center;
-      border-top: 1px solid #e0e0e0;
-      box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    footer p {
-      margin: 0;
-      font-size: 16px;
-      color: #555;
-    }
-
-    /* Responsividade */
-    @media (min-width: 769px) {
-      /* Telas grandes e médias: vídeo e lista lado a lado */
-      .video-list-container {
-        flex-direction: row;
-      }
-
-      .lista-videos {
-        width: 320px;
-      }
-    }
-
+    /* ----------------------------
+       Responsividade
+       ---------------------------- */
     @media (max-width: 768px) {
-      /* Telas pequenas: vídeo e lista em coluna */
-      .video-list-container {
-        flex-direction: column;
+      #mainVideoContainer iframe {
+        height: 250px;
       }
-
-      .lista-videos {
-        width: 100%;
+      #relatedVideosContainer {
+        flex-basis: 100%;
         max-height: none;
-        margin-top: 20px;
+        margin-top: 0;
+        margin-bottom: 10px;
       }
-
-      /* Ajustes na área de vídeo em destaque */
-      .video-destaque {
-        width: 100%;
-        max-width: 100%;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .titulo {
-        font-size: 20px;
-      }
-
-      .header-search-container {
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .back-button {
-        display: block;
-        font-size: 20px;
-        margin-right: 10px;
-      }
-
-      .search-bar {
-        flex-direction: row;
-        width: auto;
-        max-width: 70%;
-      }
-
-      .search-bar input {
-        font-size: 14px;
-        padding: 8px 10px;
-      }
-
-      .search-bar button {
-        font-size: 14px;
-        padding: 8px 10px;
-        border-radius: 0 12px 12px 0;
-      }
-
-      .categoria {
-        width: 100%;
-        padding: 20px 10px;
-      }
-
-      .categorias-list {
-        flex-direction: column;
-        gap: 20px;
-      }
-
-      .video-item {
-        flex-direction: column;
-        align-items: flex-start;
-        text-align: left;
-      }
-
-      .video-info {
-        align-items: flex-start;
-      }
-
-      .video-title {
-        font-size: 14px;
-      }
-
-      .video-category {
-        font-size: 12px;
-      }
-
-      main {
-        margin-top: 160px;
-        flex-direction: column;
-      }
-
-      .video-destaque {
-        margin-bottom: 20px;
-      }
-
-      footer {
-        padding: 10px;
-      }
-
-      footer p {
-        font-size: 14px;
-      }
-    }
-
-    /* Estilos do Botão de Play Overlay */
-    .video-destaque .play-button-overlay {
-      display: flex;
-    }
-
-    @media (min-width: 769px) {
-      .video-destaque .play-button-overlay {
-        display: none; /* Ocultar em telas grandes e médias */
-      }
-    }
-
-    @media (max-width: 768px) {
-      .video-destaque .play-button-overlay {
-        display: flex; /* Mostrar em telas pequenas */
-      }
-    }
-
-    /* Estilos para o Modal */
-    .modal.show {
-      display: flex;
-      opacity: 1;
     }
   </style>
 </head>
 <body>
-  <!-- Header -->
   <header>
-    <div class="titulo">Video-Aulas</div>
-    <!-- Container da Barra de Busca e Botão de Retorno -->
-    <div class="header-search-container">
-      <!-- Botão de retorno -->
-      <button class="back-button" aria-label="Voltar" onclick="voltar()">&#8592;</button>
-      <!-- Barra de busca -->
-      <div class="search-bar">
-        <input type="text" placeholder="Pesquisar" aria-label="Campo de busca" />
-        <button aria-label="Buscar">🔍</button>
-      </div>
-    </div>
+    <h1>Vídeo-Aula</h1>
+    <input type="text" id="searchBar" placeholder="Pesquisar vídeos ou temáticas...">
   </header>
 
-  <!-- Container Principal -->
   <main>
-    <!-- Mensagem caso não haja resultados na busca -->
-    <div class="no-results" id="noResultsMsg">Nenhuma categoria encontrada.</div>
+    <!-- Página Inicial -->
+    <div id="homeView">
+      <div id="cardsContainer"><!-- Cartões via JS --></div>
+      <div id="noResultsMessage">Nenhum resultado encontrado.</div>
+    </div>
 
-    <!-- Tela de Categorias -->
-    <section class="categorias-view">
-      <h1>Escolha uma Categoria</h1>
-      <div class="categorias-list">
-        <div class="categoria" data-category="categoria1" role="button" tabindex="0">
-          <h3>Computadores e Dispositivos</h3>
-        </div>
-        <div class="categoria" data-category="categoria2" role="button" tabindex="0">
-          <h3>Sistema Operacional</h3>
-        </div>
-        <div class="categoria" data-category="categoria3" role="button" tabindex="0">
-          <h3>Segurança e Conectividade</h3>
-        </div>
-        <div class="categoria" data-category="categoria4" role="button" tabindex="0">
-          <h3>Trabalhando com Aplicativos</h3>
-        </div>
-        <div class="categoria" data-category="categoria5" role="button" tabindex="0">
-          <h3>Microsoft Word</h3>
-        </div>
-        <div class="categoria" data-category="categoria6" role="button" tabindex="0">
-          <h3>Microsoft Excel</h3>
-        </div>
-        <div class="categoria" data-category="categoria7" role="button" tabindex="0">
-          <h3>Microsoft PowerPoint</h3>
-        </div>
+    <!-- Página de Exibição de Vídeos -->
+    <div id="videoView">
+      <button id="backButton">← Voltar</button>
+      <h1 id="videoTitle">Título do Vídeo</h1>
+      <div id="videoContainerWrapper">
+        <div id="mainVideoContainer"><!-- Vídeo principal via JS --></div>
+        <aside id="relatedVideosContainer">
+          <h2>Vídeos Relacionados</h2>
+          <!-- Vídeos relacionados via JS -->
+        </aside>
       </div>
-    </section>
-
-    <!-- Área Principal de Vídeos -->
-    <section class="videos-view" id="videosView">
-      <!-- Título da Categoria -->
-      <h2 class="nome-categoria-selecionada" id="nomeCategoriaSelecionada"></h2>
-
-      <!-- Container que junta o vídeo à esquerda e a lista à direita -->
-      <div class="video-list-container">
-        <!-- Vídeo em Destaque -->
-        <div class="video-destaque">
-          <iframe
-            id="videoDestaque"
-            src=""
-            allow="autoplay; encrypted-media; fullscreen"
-            allowfullscreen
-            title="Vídeo em destaque"
-          ></iframe>
-          <!-- Botão de Play Overlay -->
-          <div class="play-button-overlay" onclick="iniciarVideo()">
-            ▶️
-          </div>
-        </div>
-
-        <!-- Lista de Próximos Vídeos -->
-        <div class="lista-videos" id="listaVideos">
-          <!-- Os vídeos serão inseridos aqui via JavaScript -->
-        </div>
-      </div>
-    </section>
+    </div>
   </main>
 
-  <!-- Rodapé -->
-  <footer>
-    <p>2024-2025</p>
-  </footer>
-
-  <!-- Modal para Reprodução de Vídeo (Opcional) -->
-  <div
-    id="videoModal"
-    class="modal"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="modalTitle"
-    aria-describedby="modalDescription"
-  >
-    <div class="modal-content">
-      <h2 id="modalTitle" class="sr-only">Reprodução de Vídeo</h2>
-      <!-- Título acessível -->
-      <p id="modalDescription" class="sr-only">
-        Modal para exibir vídeo em tela cheia.
-      </p>
-      <span
-        class="close-modal"
-        onclick="fecharModal(event)"
-        aria-label="Fechar modal"
-        >&times;</span
-      >
-      <iframe
-        id="modalIframe"
-        src=""
-        width="100%"
-        height="450"
-        frameborder="0"
-        allow="autoplay; encrypted-media; fullscreen"
-        allowfullscreen
-        title="Vídeo no Modal"
-      ></iframe>
-    </div>
-  </div>
-
-  <!-- Scripts -->
   <script>
-    /********************************************************
-     * Estrutura de dados para categorias e vídeos
-     * com IDs válidos do Google Drive
-     ********************************************************/
-    const categorias = {
-      categoria1: [
+    // ------------------------
+    // Dados das Áreas e Vídeos
+    // ------------------------
+    const data = {
+      "Computadores e Dispositivos": [
         {
-          id: "1bllGB-UZNZJtl1WwAJ-HR_fdBFo7q5G_",
-          titulo: "O que é um computador?",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1bllGB-UZNZJtl1WwAJ-HR_fdBFo7q5G_",
+          title: "O que é um computador",
+          link: "https://drive.google.com/file/d/1bllGB-UZNZJtl1WwAJ-HR_fdBFo7q5G_/preview"
         },
         {
-          id: "1baQOeeQivEQKgFHHgmpyut42OJXnQacX",
-          titulo: "Tipos de computadores",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1baQOeeQivEQKgFHHgmpyut42OJXnQacX",
+          title: "Tipos de computadores",
+          link: "https://drive.google.com/file/d/1baQOeeQivEQKgFHHgmpyut42OJXnQacX/preview"
         },
         {
-          id: "1b__BL3g-DiGr4jr0xczQYYg-vwqfJhmE",
-          titulo: "Componentes de um computador",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1b__BL3g-DiGr4jr0xczQYYg-vwqfJhmE",
+          title: "Componentes de um computador",
+          link: "https://drive.google.com/file/d/1b__BL3g-DiGr4jr0xczQYYg-vwqfJhmE/preview"
         },
         {
-          id: "1bXFvFn3rZ77o4hTkkwHSC_yQjAsNzBqw",
-          titulo: "Conectando dispositivos de armazenamento",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1bXFvFn3rZ77o4hTkkwHSC_yQjAsNzBqw",
+          title: "Conectando dispositivos de armazenamento",
+          link: "https://drive.google.com/file/d/1bXFvFn3rZ77o4hTkkwHSC_yQjAsNzBqw/preview"
         },
         {
-          id: "1bWR0FhgntS0fA3TIlTjQ_QVY0c6T5oqD",
-          titulo: "Conectando dispositivos de bluetooth",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1bWR0FhgntS0fA3TIlTjQ_QVY0c6T5oqD",
-        },
+          title: "Conectando dispositivos de Bluetooth",
+          link: "https://drive.google.com/file/d/1bWR0FhgntS0fA3TIlTjQ_QVY0c6T5oqD/preview"
+        }
       ],
-      categoria2: [
+      "Microsoft Excel": [
         {
-          id: "1cU7PAuB51ATl6MNq_hNVCfbH--0PyT3C",
-          titulo: "O que é um sistema operacional?",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1cU7PAuB51ATl6MNq_hNVCfbH--0PyT3C",
+          title: "Utilizando Excel Online",
+          link: "https://drive.google.com/file/d/1dhQhEyyO1Dyx7LJv62Wi-R1r3-GAgAiD/preview"
         },
         {
-          id: "1cTPOSGUT2qzBQjFQufRYLGck8sp-nYM6",
-          titulo: "Trabalhando com Windows 10",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1cTPOSGUT2qzBQjFQufRYLGck8sp-nYM6",
+          title: "Criando e salvando pastas de trabalho",
+          /* Ajustado para usar /preview ao invés de /view */
+          link: "https://drive.google.com/file/d/1dwf5EzwBkib-9zV3oW1CFBEBZ4SNh5Wt/preview"
         },
         {
-          id: "1c2KDvlV63Yn9O5KThEBF_37mLr9QPOSy",
-          titulo: "Personalizando sua área de trabalho",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1c2KDvlV63Yn9O5KThEBF_37mLr9QPOSy",
+          title: "Utilizando fórmulas básicas no Excel",
+          link: "https://drive.google.com/file/d/1dkCrS7qvWjwfmu_tnyQb8Hy0zcMBSfQi/preview"
         },
         {
-          id: "1cHLEdQCzdWEateWPzKnAcyP4QU95TRJl",
-          titulo: "Organizando janelas dos aplicativos",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1cHLEdQCzdWEateWPzKnAcyP4QU95TRJl",
+          title: "Criando uma tabela simples com Excel",
+          link: "https://drive.google.com/file/d/1dnylVPQ0VrGy1HYUrwsTTmqcXKFH--Ra/preview"
         },
         {
-          id: "1cK-O5PzW2y48L6BHBcBEiamGt7mAKmaX",
-          titulo: "Organizando arquivos e pastas",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1cK-O5PzW2y48L6BHBcBEiamGt7mAKmaX",
+          title: "Modificando abas ou planilhas",
+          link: "https://drive.google.com/file/d/1ditFGulR-HtSQnwjK6S0tRNSG-oUUGcs/preview"
         },
         {
-          id: "1cHLTH26F30Gc15735WGasV7T_KliaWz0",
-          titulo: "Utilizando o botão direito do mouse",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1cHLTH26F30Gc15735WGasV7T_KliaWz0",
-        },
-        {
-          id: "1bv_eHbUXMbudsg051i_cnmhlzQaKKSOh",
-          titulo: "Funcionalidades de acessibilidade",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1bv_eHbUXMbudsg051i_cnmhlzQaKKSOh",
-        },
+          title: "Validação e formatação de conteúdo",
+          link: "https://drive.google.com/file/d/1dlpwV3lTUL8rmh1pu0cx2ZRr-azUfs8a/preview"
+        }
       ],
-      categoria3: [
+      "Microsoft PowerPoint": [
         {
-          id: "1cgdX-oF3xBCS1YVKqKqiuOk_vx2Q3YQh",
-          titulo: "Configurações de segurança do Windows 10",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1cgdX-oF3xBCS1YVKqKqiuOk_vx2Q3YQh",
+          title: "Utilizando PowerPoint Online",
+          link: "https://drive.google.com/file/d/1e1bnUh0GK84UEh-dBZrQIs3E28FVQUhM/preview"
         },
         {
-          id: "1cjLjdq4WVtxwLC9RcEwTRPSJRbUYi00o",
-          titulo: "Criando uma senha forte para sua conta",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1cjLjdq4WVtxwLC9RcEwTRPSJRbUYi00o",
+          title: "Criando e salvando apresentações",
+          link: "https://drive.google.com/file/d/1e9YFKdAGFScPfoxp5apD8c3U4P_ob_o7/preview"
         },
         {
-          id: "1cloeB23sPyvMCDadw6UnXdROldLx2ThL",
-          titulo: "Gerenciando contas no Windows 10",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1cloeB23sPyvMCDadw6UnXdROldLx2ThL",
+          title: "Fazer ou gravar uma apresentação de slides",
+          link: "https://drive.google.com/file/d/1e46ibKEtrSeBxTSbTKxqzxuFGmPx9GNh/preview"
         },
         {
-          id: "1cZz4WqcNwCCj9kxwd-3BGA-aOYFf9JE_",
-          titulo: "Configurando a rede Wi-Fi com o Windows 10",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1cZz4WqcNwCCj9kxwd-3BGA-aOYFf9JE_",
+          title: "Organizando slides com PowerPoint",
+          link: "https://drive.google.com/file/d/1e8Hz_MCHVNBp7hUbTD9Zm56Ztv5I3CDb/preview"
         },
         {
-          id: "1cg7ylYH4K5Sa4MD7LyaGEgC6TOJmuN6B",
-          titulo: "Conectando-se à internet",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1cg7ylYH4K5Sa4MD7LyaGEgC6TOJmuN6B",
+          title: "Trabalhando temas e imagens no PowerPoint",
+          link: "https://drive.google.com/file/d/1e7LB2r_xgghqmKZp1Lj_rRrEjGK0G3Mt/preview"
         },
         {
-          id: "1cg9wiK59o9OPxxXjmbEIcfw4SMUtQjY6",
-          titulo: "Mantendo o sistema operacional atualizado",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1cg9wiK59o9OPxxXjmbEIcfw4SMUtQjY6",
-        },
+          title: "Utilizando o assistente de design",
+          link: "https://drive.google.com/file/d/1e6dLp-qkWZocV_RLgSZT4q27s8c3EmTm/preview"
+        }
       ],
-      categoria4: [
+      "Microsoft Word": [
         {
-          id: "1dQrncQ6yr427NBRX0mIqmeUOykLMOPwN",
-          titulo: "O que são aplicativos?",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1dQrncQ6yr427NBRX0mIqmeUOykLMOPwN",
+          title: "Utilizando Word Online",
+          link: "https://drive.google.com/file/d/1dUgnjR11VRkRYi7oFJOC15LhjNNgNOMe/preview"
         },
         {
-          id: "1d56kKiCuFVCD6zcufCyeI-yr9k1UdhzI",
-          titulo: "Instalar e pesquisar aplicativos",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1d56kKiCuFVCD6zcufCyeI-yr9k1UdhzI",
+          title: "Criando e salvando documentos com Word",
+          link: "https://drive.google.com/file/d/1d_qV-cZ8Kj4L5-Mr5nHSQ_zTFX_8aiuw/preview"
         },
         {
-          id: "1d30gPmrOJLx23jhHxGGe-cZ9OkAlt-4S",
-          titulo: "Aprendendo a usar um novo aplicativo",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1d30gPmrOJLx23jhHxGGe-cZ9OkAlt-4S",
+          title: "Formatação de texto utilizando o Word",
+          link: "https://drive.google.com/file/d/1dXuOKtFK8nxONg992QyyyNXzdtX_SnYa/preview"
         },
         {
-          id: "1d0ZWJL0qU0icoOer9q6v1j_x_OSRqiuP",
-          titulo: "Aplicativos em dispositivos móveis",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1d0ZWJL0qU0icoOer9q6v1j_x_OSRqiuP",
+          title: "Inserindo imagens e outros elementos",
+          link: "https://drive.google.com/file/d/1dV3ez7d_aj6lSHdUawZYu42_eZwUUQ99/preview"
         },
         {
-          id: "1dIFcfYmzfharOlX1ToKc3oXjY4a8m0Vr",
-          titulo: "Abrir e salvar arquivos",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1dIFcfYmzfharOlX1ToKc3oXjY4a8m0Vr",
+          title: "Encontrar e substituir palavras",
+          link: "https://drive.google.com/file/d/1dWpNG2VqngIbysf3iYsZdMpv7rScY1yj/preview"
         },
         {
-          id: "1cx_23WsZWd70rHpAV98rqL9ImPowSkYt",
-          titulo: "Microsoft Office 2019 versus Microsoft office 365",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1cx_23WsZWd70rHpAV98rqL9ImPowSkYt",
-        },
-        {
-          id: "1cwAoupYCy-pUZI7OghJlWF8GMVzwL0ww",
-          titulo: "Microsoft Office 365 online gratuito",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1cwAoupYCy-pUZI7OghJlWF8GMVzwL0ww",
-        },
+          title: "Revisão gramatical no Word",
+          link: "https://drive.google.com/file/d/1dXCzt_aVt9KfQK70ljFtuxZVUJ-DcTuH/preview"
+        }
       ],
-      categoria5: [
+      "Segurança e Conectividade": [
         {
-          id: "1dUgnjR11VRkRYi7oFJOC15LhjNNgNOMe",
-          titulo: "Utilizando Word Online",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1dUgnjR11VRkRYi7oFJOC15LhjNNgNOMe",
+          title: "Configurações de segurança do Windows 10",
+          link: "https://drive.google.com/file/d/1cgdX-oF3xBCS1YVKqKqiuOk_vx2Q3YQh/preview"
         },
         {
-          id: "1d_qV-cZ8Kj4L5-Mr5nHSQ_zTFX_8aiuw",
-          titulo: "Criando e salvando documentos com Word",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1d_qV-cZ8Kj4L5-Mr5nHSQ_zTFX_8aiuw",
+          title: "Criando uma senha forte para sua conta",
+          link: "https://drive.google.com/file/d/1cjLjdq4WVtxwLC9RcEwTRPSJRbUYi00o/preview"
         },
         {
-          id: "1dXuOKtFK8nxONg992QyyyNXzdtX_SnYa",
-          titulo: "Formatação de texto utilizando o Word",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1dXuOKtFK8nxONg992QyyyNXzdtX_SnYa",
+          title: "Gerenciando contas no Windows 10",
+          link: "https://drive.google.com/file/d/1cloeB23sPyvMCDadw6UnXdROldLx2ThL/preview"
         },
         {
-          id: "1dV3ez7d_aj6lSHdUawZYu42_eZwUUQ99",
-          titulo: "Inserindo imagens e outros elementos",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1dV3ez7d_aj6lSHdUawZYu42_eZwUUQ99",
+          title: "Configurando a rede Wi-Fi com o Windows 10",
+          /* Removemos o underline extra do link */
+          link: "https://drive.google.com/file/d/1cZz4WqcNwCCj9kxwd-3BGA-aOYFf9JE_/preview"
         },
         {
-          id: "1dWpNG2VqngIbysf3iYsZdMpv7rScY1yj",
-          titulo: "Encontrar e substituir palavras",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1dWpNG2VqngIbysf3iYsZdMpv7rScY1yj",
+          title: "Conectando-se à internet",
+          link: "https://drive.google.com/file/d/1cg7ylYH4K5Sa4MD7LyaGEgC6TOJmuN6B/preview"
         },
         {
-          id: "1dXCzt_aVt9KfQK70ljFtuxZVUJ-DcTuH",
-          titulo: "Revisão gramatical no Word",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1dXCzt_aVt9KfQK70ljFtuxZVUJ-DcTuH",
-        },
+          title: "Mantendo o sistema operacional atualizado",
+          link: "https://drive.google.com/file/d/1cg9wiK59o9OPxxXjmbEIcfw4SMUtQjY6/preview"
+        }
       ],
-      categoria6: [
+      "Sistema Operacional": [
         {
-          id: "1dhQhEyyO1Dyx7LJv62Wi-R1r3-GAgAiD",
-          titulo: "Utilizando Excel Online",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1dhQhEyyO1Dyx7LJv62Wi-R1r3-GAgAiD",
+          title: "O que é um sistema operacional",
+          link: "https://drive.google.com/file/d/1cU7PAuB51ATl6MNq_hNVCfbH--0PyT3C/preview"
         },
         {
-          id: "1dwf5EzwBkib-9zV3oW1CFBEBZ4SNh5Wt",
-          titulo: "Criando e salvando pastas de trabalho",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1dwf5EzwBkib-9zV3oW1CFBEBZ4SNh5Wt",
+          title: "Trabalhando com Windows 10",
+          link: "https://drive.google.com/file/d/1cTPOSGUT2qzBQjFQufRYLGck8sp-nYM6/preview"
         },
         {
-          id: "1dkCrS7qvWjwfmu_tnyQb8Hy0zcMBSfQi",
-          titulo: "Utilizando fórmulas básicas no Excel",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1dkCrS7qvWjwfmu_tnyQb8Hy0zcMBSfQi",
+          title: "Personalizando sua área de trabalho",
+          link: "https://drive.google.com/file/d/1c2KDvlV63Yn9O5KThEBF_37mLr9QPOSy/preview"
         },
         {
-          id: "1dnylVPQ0VrGy1HYUrwsTTmqcXKFH--Ra",
-          titulo: "Criando uma tabela simples com Excel",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1dnylVPQ0VrGy1HYUrwsTTmqcXKFH--Ra",
+          title: "Organizando janelas dos aplicativos",
+          link: "https://drive.google.com/file/d/1cHLEdQCzdWEateWPzKnAcyP4QU95TRJl/preview"
         },
         {
-          id: "1ditFGulR-HtSQnwjK6S0tRNSG-oUUGcs",
-          titulo: "Modificando abas ou planilhas",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1ditFGulR-HtSQnwjK6S0tRNSG-oUUGcs",
+          title: "Organizando arquivos e pastas",
+          link: "https://drive.google.com/file/d/1cK-O5PzW2y48L6BHBcBEiamGt7mAKmaX/preview"
         },
         {
-          id: "1dlpwV3lTUL8rmh1pu0cx2ZRr-azUfs8a",
-          titulo: "Validação e formatação de conteúdo",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1dlpwV3lTUL8rmh1pu0cx2ZRr-azUfs8a",
+          title: "Utilizando o botão direito do mouse",
+          link: "https://drive.google.com/file/d/1cHLTH26F30Gc15735WGasV7T_KliaWz0/preview"
         },
+        {
+          title: "Funcionalidades de acessibilidade",
+          link: "https://drive.google.com/file/d/1bv_eHbUXMbudsg051i_cnmhlzQaKKSOh/preview"
+        }
       ],
-      categoria7: [
+      "Trabalhando com Aplicativos": [
         {
-          id: "1e1bnUh0GK84UEh-dBZrQIs3E28FVQUhM",
-          titulo: "Utilizando PowerPoint Online",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1e1bnUh0GK84UEh-dBZrQIs3E28FVQUhM",
+          title: "O que são aplicativos",
+          link: "https://drive.google.com/file/d/1dQrncQ6yr427NBRX0mIqmeUOykLMOPwN/preview"
         },
         {
-          id: "1e9YFKdAGFScPfoxp5apD8c3U4P_ob_o7",
-          titulo: "Criando e salvando apresentações",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1e9YFKdAGFScPfoxp5apD8c3U4P_ob_o7",
+          title: "Instalar e pesquisar aplicativos",
+          link: "https://drive.google.com/file/d/1d56kKiCuFVCD6zcufCyeI-yr9k1UdhzI/preview"
         },
         {
-          id: "1e46ibKEtrSeBxTSbTKxqzxuFGmPx9GNh",
-          titulo: "Fazer ou gravar uma apresentação de slides",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1e46ibKEtrSeBxTSbTKxqzxuFGmPx9GNh",
+          title: "Aprendendo a usar um novo aplicativo",
+          link: "https://drive.google.com/file/d/1d30gPmrOJLx23jhHxGGe-cZ9OkAlt-4S/preview"
         },
         {
-          id: "1e8Hz_MCHVNBp7hUbTD9Zm56Ztv5I3CDb",
-          titulo: "Organizando slides com PowerPoint",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1e8Hz_MCHVNBp7hUbTD9Zm56Ztv5I3CDb",
+          title: "Aplicativos em dispositivos móveis",
+          link: "https://drive.google.com/file/d/1d0ZWJL0qU0icoOer9q6v1j_x_OSRqiuP/preview"
         },
         {
-          id: "1e7LB2r_xgghqmKZp1Lj_rRrEjGK0G3Mt",
-          titulo: "Trabalhando temas e imagens no PowerPoint",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1e7LB2r_xgghqmKZp1Lj_rRrEjGK0G3Mt",
+          title: "Abrir e salvar arquivos",
+          link: "https://drive.google.com/file/d/1dIFcfYmzfharOlX1ToKc3oXjY4a8m0Vr/preview"
         },
         {
-          id: "1e6dLp-qkWZocV_RLgSZT4q27s8c3EmTm",
-          titulo: "Utilizando o assistente de design",
-          thumbnail:
-            "https://drive.google.com/thumbnail?id=1e6dLp-qkWZocV_RLgSZT4q27s8c3EmTm",
+          title: "Microsoft Office 2019 versus Microsoft Office 365",
+          link: "https://drive.google.com/file/d/1cx_23WsZWd70rHpAV98rqL9ImPowSkYt/preview"
         },
-      ],
+        {
+          title: "Microsoft Office 365 online gratuito",
+          link: "https://drive.google.com/file/d/1cwAoupYCy-pUZI7OghJlWF8GMVzwL0ww/preview"
+        }
+      ]
     };
 
-    // Mapeamento de nomes das categorias
-    const nomeCategorias = {
-      categoria1: "Computadores e Dispositivos",
-      categoria2: "Sistema Operacional",
-      categoria3: "Segurança e Conectividade",
-      categoria4: "Trabalhando com Aplicativos",
-      categoria5: "Microsoft Word",
-      categoria6: "Microsoft Excel",
-      categoria7: "Microsoft PowerPoint",
-    };
-
-    // Estado atual da aplicação: 'initial', 'search', 'videos'
-    let currentState = "initial";
-
-    // Referência para o último elemento focado antes de abrir modal (melhoria de acessibilidade)
-    let lastFocusedElement = null;
-
-    // Cache de elementos do DOM
-    const categoriasView = document.querySelector(".categorias-view");
-    const videosView = document.getElementById("videosView");
-    const backButton = document.querySelector(".back-button");
-    const nomeCategoriaSelecionada = document.getElementById("nomeCategoriaSelecionada");
-    const videoDestaque = document.getElementById("videoDestaque");
-    const listaVideos = document.getElementById("listaVideos");
-    const noResultsMsg = document.getElementById("noResultsMsg");
-    const searchInput = document.querySelector(".search-bar input");
-    const searchButton = document.querySelector(".search-bar button");
-    const playButtonOverlay = document.querySelector(".play-button-overlay");
-
-    /**
-     * Seleciona a categoria: esconde categorias e exibe tela de vídeos
-     */
-    function selecionarCategoria(categoria) {
-      nomeCategoriaSelecionada.textContent = nomeCategorias[categoria] || "Categoria";
-      categoriasView.style.display = "none";
-      videosView.style.display = "flex";
-      backButton.style.display = "block";
-      currentState = "videos";
-
-      // Carrega o primeiro vídeo como destaque
-      const primeiroVideo = categorias[categoria][0];
-      carregarVideoDestaque(primeiroVideo.id);
-
-      // Carrega a lista de vídeos
-      carregarListaVideos(categoria, primeiroVideo.id);
-    }
-
-    /**
-     * Botão de 'Voltar':
-     * - Se estiver em 'search', limpa busca e volta para estado 'initial'
-     * - Se estiver em 'videos', volta para tela de categorias
-     */
-    function voltar() {
-      if (currentState === "search") {
-        // Limpa busca e filtra categorias de volta
-        searchInput.value = "";
-        filtrarCategorias("");
-        currentState = "initial";
-
-        categoriasView.style.display = "flex";
-        videosView.style.display = "none";
-        backButton.style.display = "none";
-        noResultsMsg.style.display = "none";
-      } else if (currentState === "videos") {
-        // Volta para tela de categorias
-        videosView.style.display = "none";
-        categoriasView.style.display = "flex";
-
-        backButton.style.display = "none";
-
-        // Limpa o vídeo em destaque
-        videoDestaque.src = "";
-
-        // Limpa a lista de vídeos
-        listaVideos.innerHTML = "";
-
-        // Limpa título da categoria
-        nomeCategoriaSelecionada.textContent = "";
-
-        currentState = "initial";
-      }
-    }
-
-    /**
-     * Carrega o vídeo em destaque (iframe)
-     */
-    function carregarVideoDestaque(videoId) {
-      // Limpa a fonte atual antes de carregar o novo vídeo
-      videoDestaque.src = "";
-      playButtonOverlay.style.display = "flex"; // Mostra o botão de play
-      videoDestaque.src = `https://drive.google.com/file/d/${videoId}/preview`;
-    }
-
-    /**
-     * Inicia a reprodução do vídeo em destaque
-     */
-    function iniciarVideo() {
-      const src = videoDestaque.src;
-      videoDestaque.src = `${src}&autoplay=1`;
-      playButtonOverlay.style.display = "none"; // Esconde o botão de play após iniciar
-    }
-
-    /**
-     * Carrega a lista de vídeos para a categoria selecionada
-     */
-    function carregarListaVideos(categoria, videoAtualId) {
-      listaVideos.innerHTML = ""; // Limpa a lista atual
-
-      categorias[categoria].forEach((video) => {
-        // Cria elemento do vídeo
-        const videoItem = document.createElement("div");
-        videoItem.classList.add("video-item");
-        videoItem.setAttribute("data-video-id", video.id);
-        videoItem.setAttribute("role", "button");
-        videoItem.setAttribute("tabindex", "0");
-
-        if (video.id === videoAtualId) {
-          videoItem.classList.add("video-atual");
-        }
-
-        // Miniatura
-        const thumbnailImg = document.createElement("img");
-        thumbnailImg.classList.add("video-thumbnail");
-        thumbnailImg.src = video.thumbnail;
-        thumbnailImg.alt = `Miniatura do vídeo: ${video.titulo}`;
-
-        // Informações do vídeo
-        const videoInfo = document.createElement("div");
-        videoInfo.classList.add("video-info");
-
-        const videoTitle = document.createElement("div");
-        videoTitle.classList.add("video-title");
-        videoTitle.textContent = video.titulo;
-
-        const videoCategory = document.createElement("div");
-        videoCategory.classList.add("video-category");
-        videoCategory.textContent = nomeCategorias[categoria];
-
-        videoInfo.appendChild(videoTitle);
-        videoInfo.appendChild(videoCategory);
-
-        videoItem.appendChild(thumbnailImg);
-        videoItem.appendChild(videoInfo);
-
-        // Adiciona o vídeo à lista
-        listaVideos.appendChild(videoItem);
+    // -----------
+    // Inicialização
+    // -----------
+    document.addEventListener("DOMContentLoaded", () => {
+      initializeIndexPage();
+      document.getElementById('backButton').addEventListener('click', () => {
+        // Ao voltar, limpamos o iframe para parar o vídeo instantaneamente
+        stopVideoAndShowHome();
       });
-    }
+    });
 
-    /**
-     * Seleciona e carrega um vídeo (clicado ou focado + enter/space)
-     */
-    function selecionarVideo(videoId) {
-      carregarVideoDestaque(videoId);
-      atualizarVideoAtual(videoId);
-    }
+    // -----------------------
+    // Funções Auxiliares
+    // -----------------------
 
-    /**
-     * Atualiza a seleção do vídeo atual (destacado)
-     */
-    function atualizarVideoAtual(videoId) {
-      const videoItems = listaVideos.querySelectorAll(".video-item");
+    // Monta a página inicial
+    function initializeIndexPage() {
+      const cardsContainer = document.getElementById('cardsContainer');
+      const searchBar = document.getElementById('searchBar');
+      const noResultsMessage = document.getElementById('noResultsMessage');
 
-      videoItems.forEach((item) => {
-        if (item.getAttribute("data-video-id") === videoId) {
-          item.classList.add("video-atual");
+      // Cria um cartão para cada área
+      for (let area in data) {
+        createCard(cardsContainer, area);
+      }
+
+      // Função de busca
+      searchBar.addEventListener('input', function () {
+        const query = this.value.toLowerCase();
+        const filteredAreas = Object.keys(data).filter(area =>
+          area.toLowerCase().includes(query) ||
+          data[area].some(video => video.title.toLowerCase().includes(query))
+        );
+
+        // Limpa os cartões atuais
+        cardsContainer.innerHTML = '';
+
+        if (filteredAreas.length === 0) {
+          noResultsMessage.style.display = 'block';
         } else {
-          item.classList.remove("video-atual");
+          noResultsMessage.style.display = 'none';
+          filteredAreas.forEach(area => {
+            createCard(cardsContainer, area);
+          });
         }
       });
     }
 
-    /**
-     * Abre modal com o vídeo (opcional)
-     */
-    function abrirModal(videoId) {
-      const modal = document.getElementById("videoModal");
-      const iframeModal = document.getElementById("modalIframe");
-
-      // Armazena o último elemento clicado para devolver foco depois
-      lastFocusedElement = document.activeElement;
-
-      iframeModal.src = `https://drive.google.com/file/d/${videoId}/preview`;
-      modal.classList.add("show");
-
-      // Foco no modal
-      modal.setAttribute("tabindex", "-1");
-      modal.focus();
-    }
-
-    /**
-     * Fecha o modal
-     */
-    function fecharModal(event) {
-      const modal = document.getElementById("videoModal");
-      if (
-        event.target == modal ||
-        event.target.classList.contains("close-modal")
-      ) {
-        const iframeModal = document.getElementById("modalIframe");
-        iframeModal.src = "";
-        modal.classList.remove("show");
-
-        // Devolve o foco ao último elemento clicado, se existir
-        if (lastFocusedElement) {
-          lastFocusedElement.focus();
-        }
-      }
-    }
-
-    /**
-     * Filtra categorias pela busca
-     */
-    function filtrarCategorias(query) {
-      const categoriasList = document.querySelector(".categorias-list");
-      const listaDeCategorias = categoriasList.querySelectorAll(".categoria");
-
-      let resultadosVisiveis = 0;
-
-      listaDeCategorias.forEach((categoria) => {
-        const titulo = categoria.querySelector("h3").textContent.toLowerCase();
-        if (titulo.includes(query)) {
-          categoria.style.display = "flex";
-          resultadosVisiveis++;
-        } else {
-          categoria.style.display = "none";
-        }
+    // Cria um cartão (div) para cada área
+    function createCard(container, area) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `<h2>${area}</h2>`;
+      card.addEventListener('click', () => {
+        showVideoView(area, 0);
       });
-
-      // Se nenhum resultado for encontrado, exibe a mensagem
-      if (resultadosVisiveis === 0 && query.trim() !== "") {
-        noResultsMsg.style.display = "block";
-      } else {
-        noResultsMsg.style.display = "none";
-      }
+      container.appendChild(card);
     }
 
-    /********************************************************
-     * Listeners de eventos
-     ********************************************************/
-    // Busca ao clicar no botão
-    searchButton.addEventListener("click", function () {
-      const query = searchInput.value.toLowerCase();
-      filtrarCategorias(query);
-      if (query.trim() !== "") {
-        currentState = "search";
-        backButton.style.display = "block";
-      }
-    });
+    // Mostra a tela de vídeo
+    function showVideoView(area, videoIndex) {
+      const homeView = document.getElementById('homeView');
+      const videoView = document.getElementById('videoView');
+      const videoTitle = document.getElementById('videoTitle');
+      const mainVideoContainer = document.getElementById('mainVideoContainer');
+      const relatedVideosContainer = document.getElementById('relatedVideosContainer');
 
-    // Busca ao pressionar Enter no input
-    searchInput.addEventListener("keydown", function (event) {
-      if (event.key === "Enter") {
-        const query = event.target.value.toLowerCase();
-        filtrarCategorias(query);
-        if (query.trim() !== "") {
-          currentState = "search";
-          backButton.style.display = "block";
+      homeView.style.display = 'none';
+      videoView.style.display = 'block';
+
+      // Dados do vídeo principal
+      const { title, link } = data[area][videoIndex];
+      videoTitle.textContent = title;
+
+      // Iframe com autoplay
+      mainVideoContainer.innerHTML = `
+        <iframe 
+          src="${appendAutoplayParam(link)}" 
+          allow="autoplay" 
+          allowfullscreen>
+        </iframe>
+      `;
+
+      // Limpa e recria a lista de vídeos relacionados
+      relatedVideosContainer.innerHTML = '<h2>Vídeos Relacionados</h2>';
+      data[area].forEach((video, index) => {
+        const videoCard = document.createElement('div');
+        videoCard.className = 'videoCard';
+        videoCard.textContent = video.title;
+
+        // Destaca o vídeo atual
+        if (index === videoIndex) {
+          videoCard.style.background = '#e3f7f7';
         }
-      }
-    });
 
-    // Captura cliques delegados (categorias, vídeos, thumbnails)
-    document.addEventListener("click", function (event) {
-      // Verifica se uma categoria foi clicada
-      if (event.target.closest(".categoria")) {
-        const categoriaElement = event.target.closest(".categoria");
-        const categoria = categoriaElement.getAttribute("data-category");
-        selecionarCategoria(categoria);
-      }
-
-      // Verifica se um vídeo foi clicado
-      if (event.target.closest(".video-item")) {
-        const videoElement = event.target.closest(".video-item");
-        const videoId = videoElement.getAttribute("data-video-id");
-        selecionarVideo(videoId);
-      }
-
-      // Exemplo se quiser abrir modal pelo clique na miniatura:
-      // if (event.target.classList.contains("video-thumbnail")) {
-      //   const videoElement = event.target.closest(".video-item");
-      //   const videoId = videoElement.getAttribute("data-video-id");
-      //   abrirModal(videoId);
-      //   event.stopPropagation(); // Para não disparar seleção de vídeo duas vezes
-      // }
-    });
-
-    // Captura teclas delegadas (Enter / Espaço em categorias e vídeos)
-    document.addEventListener("keydown", function (event) {
-      const target = event.target;
-
-      // Se o foco estiver em uma categoria e a tecla for Enter ou Espaço
-      if (
-        target.matches(".categoria") &&
-        (event.key === "Enter" || event.key === " ")
-      ) {
-        event.preventDefault(); // Evita rolagem da página ao pressionar espaço
-        const categoria = target.getAttribute("data-category");
-        selecionarCategoria(categoria);
-      }
-
-      // Se o foco estiver em um vídeo e a tecla for Enter ou Espaço
-      if (
-        target.matches(".video-item") &&
-        (event.key === "Enter" || event.key === " ")
-      ) {
-        event.preventDefault();
-        const videoId = target.getAttribute("data-video-id");
-        selecionarVideo(videoId);
-      }
-
-      // Fechar modal ao pressionar Esc
-      if (event.key === "Escape") {
-        fecharModal(event);
-      }
-    });
-
-    /**
-     * Inicia a reprodução do vídeo em destaque ao clicar no botão de play
-     */
-    function iniciarVideo() {
-      const src = videoDestaque.src;
-      videoDestaque.src = `${src}&autoplay=1`;
-      playButtonOverlay.style.display = "none"; // Esconde o botão de play após iniciar
+        videoCard.addEventListener('click', () => {
+          showVideoView(area, index);
+        });
+        relatedVideosContainer.appendChild(videoCard);
+      });
     }
 
-    /**
-     * Abre modal com o vídeo (opcional)
-     */
-    function abrirModal(videoId) {
-      const modal = document.getElementById("videoModal");
-      const iframeModal = document.getElementById("modalIframe");
-
-      // Armazena o último elemento clicado para devolver foco depois
-      lastFocusedElement = document.activeElement;
-
-      iframeModal.src = `https://drive.google.com/file/d/${videoId}/preview`;
-      modal.classList.add("show");
-
-      // Foco no modal
-      modal.setAttribute("tabindex", "-1");
-      modal.focus();
+    // Parametro autoplay (se não tiver ? usa ?, senão usa &)
+    function appendAutoplayParam(link) {
+      return link.includes('?') ? `${link}&autoplay=1` : `${link}?autoplay=1`;
     }
 
-    /**
-     * Fecha o modal
-     */
-    function fecharModal(event) {
-      const modal = document.getElementById("videoModal");
-      if (
-        event.target == modal ||
-        event.target.classList.contains("close-modal")
-      ) {
-        const iframeModal = document.getElementById("modalIframe");
-        iframeModal.src = "";
-        modal.classList.remove("show");
+    // Função para voltar para a tela inicial, parando o vídeo
+    function stopVideoAndShowHome() {
+      const homeView = document.getElementById('homeView');
+      const videoView = document.getElementById('videoView');
+      const mainVideoContainer = document.getElementById('mainVideoContainer');
 
-        // Devolve o foco ao último elemento clicado, se existir
-        if (lastFocusedElement) {
-          lastFocusedElement.focus();
-        }
-      }
+      // Limpa o iframe (para parar o vídeo imediatamente)
+      mainVideoContainer.innerHTML = '';
+
+      // Exibe home e oculta videoView
+      homeView.style.display = 'block';
+      videoView.style.display = 'none';
     }
   </script>
 </body>
