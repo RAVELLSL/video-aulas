@@ -121,6 +121,7 @@
       flex: 3;
       min-width: 300px;
       padding: 10px;
+      position: relative;
     }
     #mainVideoContainer iframe {
       width: 100%;
@@ -191,6 +192,24 @@
         margin-bottom: 10px;
       }
     }
+
+    /* Loader */
+    .loader {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #00b5ad;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    @keyframes spin {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -211,7 +230,10 @@
       <button id="backButton">← Voltar</button>
       <h1 id="videoTitle">Título do Vídeo</h1>
       <div id="videoContainerWrapper">
-        <div id="mainVideoContainer"><!-- Vídeo principal via JS --></div>
+        <div id="mainVideoContainer">
+          <div class="loader"></div>
+          <!-- Vídeo principal via JS -->
+        </div>
         <aside id="relatedVideosContainer">
           <h2>Vídeos Relacionados</h2>
           <!-- Vídeos relacionados via JS -->
@@ -340,7 +362,6 @@
         },
         {
           title: "Configurando a rede Wi-Fi com o Windows 10",
-          /* Removemos o underline extra do link */
           link: "https://drive.google.com/file/d/1cZz4WqcNwCCj9kxwd-3BGA-aOYFf9JE_/preview"
         },
         {
@@ -420,7 +441,6 @@
     document.addEventListener("DOMContentLoaded", () => {
       initializeIndexPage();
       document.getElementById('backButton').addEventListener('click', () => {
-        // Ao voltar, limpamos o iframe para parar o vídeo instantaneamente
         stopVideoAndShowHome();
       });
     });
@@ -488,14 +508,27 @@
       const { title, link } = data[area][videoIndex];
       videoTitle.textContent = title;
 
-      // Iframe com autoplay
-      mainVideoContainer.innerHTML = `
-        <iframe 
-          src="${appendAutoplayParam(link)}" 
-          allow="autoplay" 
-          allowfullscreen>
-        </iframe>
-      `;
+      // Mostra o loader enquanto o vídeo carrega
+      mainVideoContainer.innerHTML = '<div class="loader"></div>';
+
+      // Cria o iframe após um pequeno delay para garantir que o loader seja exibido
+      setTimeout(() => {
+        const iframe = document.createElement('iframe');
+        iframe.src = appendAutoplayParam(link);
+        iframe.allow = "autoplay; fullscreen";
+        iframe.style.width = '100%';
+        iframe.style.height = '400px';
+        iframe.style.border = '2px solid #00ffea';
+        iframe.style.borderRadius = '8px';
+        iframe.style.boxShadow = '0 0 8px rgba(0, 255, 234, 0.2)';
+        iframe.onload = () => {
+          mainVideoContainer.innerHTML = '';
+          mainVideoContainer.appendChild(iframe);
+        };
+        iframe.onerror = () => {
+          mainVideoContainer.innerHTML = '<p>Erro ao carregar o vídeo. Por favor, tente novamente.</p>';
+        };
+      }, 100);
 
       // Limpa e recria a lista de vídeos relacionados
       relatedVideosContainer.innerHTML = '<h2>Vídeos Relacionados</h2>';
