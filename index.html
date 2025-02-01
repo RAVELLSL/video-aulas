@@ -378,13 +378,12 @@
           videoCard.classList.add('current');
         }
         videoCard.addEventListener('click', () => {
-          history.pushState({ view: 'video', area, videoIndex: index }, "", `#video-${area}-${index}`);
           showVideoView(area, index);
         });
         relatedVideosContainer.appendChild(videoCard);
       });
 
-      // Atualiza o estado da URL para a visualização de vídeo
+      // Atualiza o estado da URL para a visualização de vídeo (única atualização de pushState)
       history.pushState({ view: 'video', area, videoIndex }, "", `#video-${area}-${videoIndex}`);
     }
 
@@ -419,7 +418,6 @@
           card.className = 'card';
           card.innerHTML = `<h2>${item.video.title}</h2><p>${item.area}</p>`;
           card.addEventListener('click', () => {
-            history.pushState({ view: 'video', area: item.area, videoIndex: item.index }, "", `#video-${item.area}-${item.index}`);
             showVideoView(item.area, item.index);
           });
           cardsContainer.appendChild(card);
@@ -433,7 +431,6 @@
       card.className = 'card';
       card.innerHTML = `<h2>${area}</h2>`;
       card.addEventListener('click', () => {
-        history.pushState({ view: 'video', area, videoIndex: 0 }, "", `#video-${area}-0`);
         showVideoView(area, 0);
       });
       container.appendChild(card);
