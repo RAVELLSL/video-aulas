@@ -189,9 +189,71 @@
     <input type="text" id="searchBar" placeholder="Pesquisar vídeos ou temáticas...">
   </header>
   <main>
+    <!-- Dados dos Vídeos (ocultos na página) -->
+    <div id="videoData" style="display: none;">
+      <!-- Cada div com data-area representa uma categoria -->
+      <div data-area="Computadores e Dispositivos">
+        <div data-title="o que é um computador" data-link="https://drive.google.com/file/d/1bllGB-UZNZJtl1WwAJ-HR_fdBFo7q5G_/preview"></div>
+        <div data-title="tipos de computadores" data-link="https://drive.google.com/file/d/1baQOeeQivEQKgFHHgmpyut42OJXnQacX/preview"></div>
+        <div data-title="componentes de um computador" data-link="https://drive.google.com/file/d/1b__BL3g-DiGr4jr0xczQYYg-vwqfJhmE/preview"></div>
+        <div data-title="conectando dispositivos de armazenamento" data-link="https://drive.google.com/file/d/1bXFvFn3rZ77o4hTkkwHSC_yQjAsNzBqw/preview"></div>
+        <div data-title="conectando dispositivos de bluetooth" data-link="https://drive.google.com/file/d/1bWR0FhgntS0fA3TIlTjQ_QVY0c6T5oqD/preview"></div>
+      </div>
+      <div data-area="Microsoft Excel">
+        <div data-title="Utilizando Excel Online" data-link="https://drive.google.com/file/d/1dhQhEyyO1Dyx7LJv62Wi-R1r3-GAgAiD/preview"></div>
+        <div data-title="Criando e salvando pastas de trabalho" data-link="https://drive.google.com/file/d/1dwf5EzwBkib-9zV3oW1CFBEBZ4SNh5Wt/view?usp=drive_link"></div>
+        <div data-title="Utilizando fórmulas básicas no Excel" data-link="https://drive.google.com/file/d/1dkCrS7qvWjwfmu_tnyQb8Hy0zcMBSfQi/preview"></div>
+        <div data-title="Criando uma tabela simples com Excel" data-link="https://drive.google.com/file/d/1dnylVPQ0VrGy1HYUrwsTTmqcXKFH--Ra/preview"></div>
+        <div data-title="Modificando abas ou planilhas" data-link="https://drive.google.com/file/d/1ditFGulR-HtSQnwjK6S0tRNSG-oUUGcs/preview"></div>
+        <div data-title="Validação e formatação de conteúdo" data-link="https://drive.google.com/file/d/1dlpwV3lTUL8rmh1pu0cx2ZRr-azUfs8a/preview"></div>
+      </div>
+      <div data-area="Microsoft PowerPoint">
+        <div data-title="Utilizando PowerPoint Online" data-link="https://drive.google.com/file/d/1e1bnUh0GK84UEh-dBZrQIs3E28FVQUhM/preview"></div>
+        <div data-title="Criando e salvando apresentações" data-link="https://drive.google.com/file/d/1e9YFKdAGFScPfoxp5apD8c3U4P_ob_o7/preview"></div>
+        <div data-title="Fazer ou gravar uma apresentação de slides" data-link="https://drive.google.com/file/d/1e46ibKEtrSeBxTSbTKxqzxuFGmPx9GNh/preview"></div>
+        <div data-title="Organizando slides com PowerPoint" data-link="https://drive.google.com/file/d/1e8Hz_MCHVNBp7hUbTD9Zm56Ztv5I3CDb/preview"></div>
+        <div data-title="Trabalhando temas e imagens no PowerPoint" data-link="https://drive.google.com/file/d/1e7LB2r_xgghqmKZp1Lj_rRrEjGK0G3Mt/preview"></div>
+        <div data-title="Utilizando o assistente de design" data-link="https://drive.google.com/file/d/1e6dLp-qkWZocV_RLgSZT4q27s8c3EmTm/preview"></div>
+      </div>
+      <div data-area="Microsoft Word">
+        <div data-title="utilizando word online" data-link="https://drive.google.com/file/d/1dUgnjR11VRkRYi7oFJOC15LhjNNgNOMe/preview"></div>
+        <div data-title="criando e salvando documentos com word" data-link="https://drive.google.com/file/d/1d_qV-cZ8Kj4L5-Mr5nHSQ_zTFX_8aiuw/preview"></div>
+        <div data-title="formatação de texto utilizando o word" data-link="https://drive.google.com/file/d/1dXuOKtFK8nxONg992QyyyNXzdtX_SnYa/preview"></div>
+        <div data-title="inserindo imagens e outros elementos" data-link="https://drive.google.com/file/d/1dV3ez7d_aj6lSHdUawZYu42_eZwUUQ99/preview"></div>
+        <div data-title="encontrar e substituir palavras" data-link="https://drive.google.com/file/d/1dWpNG2VqngIbysf3iYsZdMpv7rScY1yj/preview"></div>
+        <div data-title="revisão gramatical no word" data-link="https://drive.google.com/file/d/1dXCzt_aVt9KfQK70ljFtuxZVUJ-DcTuH/preview"></div>
+      </div>
+      <div data-area="Segurança e Conectividade">
+        <div data-title="configurações de segurança do windows 10" data-link="https://drive.google.com/file/d/1cgdX-oF3xBCS1YVKqKqiuOk_vx2Q3YQh/preview"></div>
+        <div data-title="criando uma senha forte para sua conta" data-link="https://drive.google.com/file/d/1cjLjdq4WVtxwLC9RcEwTRPSJRbUYi00o/preview"></div>
+        <div data-title="gerenciando contas no windows 10" data-link="https://drive.google.com/file/d/1cloeB23sPyvMCDadw6UnXdROldLx2ThL/preview"></div>
+        <div data-title="configurando a rede wi-fi com o windows 10" data-link="https://drive.google.com/file/d/1cZz4WqcNwCCj9kxwd-3BGA-aOYFf9JE_/preview"></div>
+        <div data-title="conectando-se à internet" data-link="https://drive.google.com/file/d/1cg7ylYH4K5Sa4MD7LyaGEgC6TOJmuN6B/preview"></div>
+        <div data-title="mantendo o sistema operacional atualizado" data-link="https://drive.google.com/file/d/1cg9wiK59o9OPxxXjmbEIcfw4SMUtQjY6/preview"></div>
+      </div>
+      <div data-area="Sistema Operacional">
+        <div data-title="o que é um sistema operacional" data-link="https://drive.google.com/file/d/1cU7PAuB51ATl6MNq_hNVCfbH--0PyT3C/preview"></div>
+        <div data-title="trabalhando com windows 10" data-link="https://drive.google.com/file/d/1cTPOSGUT2qzBQjFQufRYLGck8sp-nYM6/preview"></div>
+        <div data-title="personalizando sua área de trabalho" data-link="https://drive.google.com/file/d/1c2KDvlV63Yn9O5KThEBF_37mLr9QPOSy/preview"></div>
+        <div data-title="organizando janelas dos aplicativos" data-link="https://drive.google.com/file/d/1cHLEdQCzdWEateWPzKnAcyP4QU95TRJl/preview"></div>
+        <div data-title="organizando arquivos e pastas" data-link="https://drive.google.com/file/d/1cK-O5PzW2y48L6BHBcBEiamGt7mAKmaX/preview"></div>
+        <div data-title="utilizando o botão direito do mouse" data-link="https://drive.google.com/file/d/1cHLTH26F30Gc15735WGasV7T_KliaWz0/preview"></div>
+        <div data-title="funcionalidades de acessibilidade" data-link="https://drive.google.com/file/d/1bv_eHbUXMbudsg051i_cnmhlzQaKKSOh/preview"></div>
+      </div>
+      <div data-area="Trabalhando com Aplicativos">
+        <div data-title="o que são aplicativos" data-link="https://drive.google.com/file/d/1dQrncQ6yr427NBRX0mIqmeUOykLMOPwN/preview"></div>
+        <div data-title="instalar e pesquisar aplicativos" data-link="https://drive.google.com/file/d/1d56kKiCuFVCD6zcufCyeI-yr9k1UdhzI/preview"></div>
+        <div data-title="aprendendo a usar um novo aplicativo" data-link="https://drive.google.com/file/d/1d30gPmrOJLx23jhHxGGe-cZ9OkAlt-4S/preview"></div>
+        <div data-title="aplicativos em dispositivos móveis" data-link="https://drive.google.com/file/d/1d0ZWJL0qU0icoOer9q6v1j_x_OSRqiuP/preview"></div>
+        <div data-title="abrir e salvar arquivos" data-link="https://drive.google.com/file/d/1dIFcfYmzfharOlX1ToKc3oXjY4a8m0Vr/preview"></div>
+        <div data-title="Microsoft office 2019 versus Microsoft office 365" data-link="https://drive.google.com/file/d/1cx_23WsZWd70rHpAV98rqL9ImPowSkYt/preview"></div>
+        <div data-title="Microsoft office 365 online gratuito" data-link="https://drive.google.com/file/d/1cwAoupYCy-pUZI7OghJlWF8GMVzwL0ww/preview"></div>
+      </div>
+    </div>
+
     <!-- Tela Inicial -->
     <div id="homeView">
-      <div id="cardsContainer"><!-- Cartões serão inseridos via JavaScript --></div>
+      <div id="cardsContainer"><!-- Os cartões serão gerados dinamicamente a partir dos dados do HTML --></div>
       <div id="noResultsMessage">Nenhum resultado encontrado.</div>
     </div>
     <!-- Tela de Vídeo -->
@@ -204,78 +266,38 @@
         </div>
         <aside id="relatedVideosContainer">
           <h2>Vídeos Relacionados</h2>
-          <!-- Vídeos relacionados serão inseridos via JavaScript -->
+          <!-- Vídeos relacionados serão gerados dinamicamente -->
         </aside>
       </div>
     </div>
   </main>
   <script>
-    /* --------------------------------------------------
-       Dados das Áreas e Vídeos (lista conforme fornecida)
-       -------------------------------------------------- */
-    const data = {
-      "Computadores e Dispositivos": [
-        { title: "o que é um computador", link: "https://drive.google.com/file/d/1bllGB-UZNZJtl1WwAJ-HR_fdBFo7q5G_/preview" },
-        { title: "tipos de computadores", link: "https://drive.google.com/file/d/1baQOeeQivEQKgFHHgmpyut42OJXnQacX/preview" },
-        { title: "componentes de um computador", link: "https://drive.google.com/file/d/1b__BL3g-DiGr4jr0xczQYYg-vwqfJhmE/preview" },
-        { title: "conectando dispositivos de armazenamento", link: "https://drive.google.com/file/d/1bXFvFn3rZ77o4hTkkwHSC_yQjAsNzBqw/preview" },
-        { title: "conectando dispositivos de bluetooth", link: "https://drive.google.com/file/d/1bWR0FhgntS0fA3TIlTjQ_QVY0c6T5oqD/preview" }
-      ],
-      "Microsoft Excel": [
-        { title: "Utilizando Excel Online", link: "https://drive.google.com/file/d/1dhQhEyyO1Dyx7LJv62Wi-R1r3-GAgAiD/preview" },
-        { title: "Criando e salvando pastas de trabalho", link: "https://drive.google.com/file/d/1dwf5EzwBkib-9zV3oW1CFBEBZ4SNh5Wt/view?usp=drive_link" },
-        { title: "Utilizando fórmulas básicas no Excel", link: "https://drive.google.com/file/d/1dkCrS7qvWjwfmu_tnyQb8Hy0zcMBSfQi/preview" },
-        { title: "Criando uma tabela simples com Excel", link: "https://drive.google.com/file/d/1dnylVPQ0VrGy1HYUrwsTTmqcXKFH--Ra/preview" },
-        { title: "Modificando abas ou planilhas", link: "https://drive.google.com/file/d/1ditFGulR-HtSQnwjK6S0tRNSG-oUUGcs/preview" },
-        { title: "Validação e formatação de conteúdo", link: "https://drive.google.com/file/d/1dlpwV3lTUL8rmh1pu0cx2ZRr-azUfs8a/preview" }
-      ],
-      "Microsoft PowerPoint": [
-        { title: "Utilizando PowerPoint Online", link: "https://drive.google.com/file/d/1e1bnUh0GK84UEh-dBZrQIs3E28FVQUhM/preview" },
-        { title: "Criando e salvando apresentações", link: "https://drive.google.com/file/d/1e9YFKdAGFScPfoxp5apD8c3U4P_ob_o7/preview" },
-        { title: "Fazer ou gravar uma apresentação de slides", link: "https://drive.google.com/file/d/1e46ibKEtrSeBxTSbTKxqzxuFGmPx9GNh/preview" },
-        { title: "Organizando slides com PowerPoint", link: "https://drive.google.com/file/d/1e8Hz_MCHVNBp7hUbTD9Zm56Ztv5I3CDb/preview" },
-        { title: "Trabalhando temas e imagens no PowerPoint", link: "https://drive.google.com/file/d/1e7LB2r_xgghqmKZp1Lj_rRrEjGK0G3Mt/preview" },
-        { title: "Utilizando o assistente de design", link: "https://drive.google.com/file/d/1e6dLp-qkWZocV_RLgSZT4q27s8c3EmTm/preview" }
-      ],
-      "Microsoft Word": [
-        { title: "utilizando word online", link: "https://drive.google.com/file/d/1dUgnjR11VRkRYi7oFJOC15LhjNNgNOMe/preview" },
-        { title: "criando e salvando documentos com word", link: "https://drive.google.com/file/d/1d_qV-cZ8Kj4L5-Mr5nHSQ_zTFX_8aiuw/preview" },
-        { title: "formatação de texto utilizando o word", link: "https://drive.google.com/file/d/1dXuOKtFK8nxONg992QyyyNXzdtX_SnYa/preview" },
-        { title: "inserindo imagens e outros elementos", link: "https://drive.google.com/file/d/1dV3ez7d_aj6lSHdUawZYu42_eZwUUQ99/preview" },
-        { title: "encontrar e substituir palavras", link: "https://drive.google.com/file/d/1dWpNG2VqngIbysf3iYsZdMpv7rScY1yj/preview" },
-        { title: "revisão gramatical no word", link: "https://drive.google.com/file/d/1dXCzt_aVt9KfQK70ljFtuxZVUJ-DcTuH/preview" }
-      ],
-      "Segurança e Conectividade": [
-        { title: "configurações de segurança do windows 10", link: "https://drive.google.com/file/d/1cgdX-oF3xBCS1YVKqKqiuOk_vx2Q3YQh/preview" },
-        { title: "criando uma senha forte para sua conta", link: "https://drive.google.com/file/d/1cjLjdq4WVtxwLC9RcEwTRPSJRbUYi00o/preview" },
-        { title: "gerenciando contas no windows 10", link: "https://drive.google.com/file/d/1cloeB23sPyvMCDadw6UnXdROldLx2ThL/preview" },
-        { title: "configurando a rede wi-fi com o windows 10", link: "https://drive.google.com/file/d/1cZz4WqcNwCCj9kxwd-3BGA-aOYFf9JE_/preview" },
-        { title: "conectando-se à internet", link: "https://drive.google.com/file/d/1cg7ylYH4K5Sa4MD7LyaGEgC6TOJmuN6B/preview" },
-        { title: "mantendo o sistema operacional atualizado", link: "https://drive.google.com/file/d/1cg9wiK59o9OPxxXjmbEIcfw4SMUtQjY6/preview" }
-      ],
-      "Sistema Operacional": [
-        { title: "o que é um sistema operacional", link: "https://drive.google.com/file/d/1cU7PAuB51ATl6MNq_hNVCfbH--0PyT3C/preview" },
-        { title: "trabalhando com windows 10", link: "https://drive.google.com/file/d/1cTPOSGUT2qzBQjFQufRYLGck8sp-nYM6/preview" },
-        { title: "personalizando sua área de trabalho", link: "https://drive.google.com/file/d/1c2KDvlV63Yn9O5KThEBF_37mLr9QPOSy/preview" },
-        { title: "organizando janelas dos aplicativos", link: "https://drive.google.com/file/d/1cHLEdQCzdWEateWPzKnAcyP4QU95TRJl/preview" },
-        { title: "organizando arquivos e pastas", link: "https://drive.google.com/file/d/1cK-O5PzW2y48L6BHBcBEiamGt7mAKmaX/preview" },
-        { title: "utilizando o botão direito do mouse", link: "https://drive.google.com/file/d/1cHLTH26F30Gc15735WGasV7T_KliaWz0/preview" },
-        { title: "funcionalidades de acessibilidade", link: "https://drive.google.com/file/d/1bv_eHbUXMbudsg051i_cnmhlzQaKKSOh/preview" }
-      ],
-      "Trabalhando com Aplicativos": [
-        { title: "o que são aplicativos", link: "https://drive.google.com/file/d/1dQrncQ6yr427NBRX0mIqmeUOykLMOPwN/preview" },
-        { title: "instalar e pesquisar aplicativos", link: "https://drive.google.com/file/d/1d56kKiCuFVCD6zcufCyeI-yr9k1UdhzI/preview" },
-        { title: "aprendendo a usar um novo aplicativo", link: "https://drive.google.com/file/d/1d30gPmrOJLx23jhHxGGe-cZ9OkAlt-4S/preview" },
-        { title: "aplicativos em dispositivos móveis", link: "https://drive.google.com/file/d/1d0ZWJL0qU0icoOer9q6v1j_x_OSRqiuP/preview" },
-        { title: "abrir e salvar arquivos", link: "https://drive.google.com/file/d/1dIFcfYmzfharOlX1ToKc3oXjY4a8m0Vr/preview" },
-        { title: "Microsoft office 2019 versus Microsoft office 365", link: "https://drive.google.com/file/d/1cx_23WsZWd70rHpAV98rqL9ImPowSkYt/preview" },
-        { title: "Microsoft office 365 online gratuito", link: "https://drive.google.com/file/d/1cwAoupYCy-pUZI7OghJlWF8GMVzwL0ww/preview" }
-      ]
-    };
+    // --- Função para coletar os dados dos vídeos a partir do HTML ---
+    function getVideoDataFromHTML() {
+      const videoDataContainer = document.getElementById('videoData');
+      const data = {};
+      // Seleciona cada categoria (div com data-area)
+      const categoryDivs = videoDataContainer.querySelectorAll('div[data-area]');
+      categoryDivs.forEach(categoryDiv => {
+        const area = categoryDiv.getAttribute('data-area');
+        data[area] = [];
+        // Seleciona cada vídeo dentro da categoria
+        const videoDivs = categoryDiv.querySelectorAll('div[data-title]');
+        videoDivs.forEach(videoDiv => {
+          const title = videoDiv.getAttribute('data-title');
+          const link = videoDiv.getAttribute('data-link');
+          data[area].push({ title, link });
+        });
+      });
+      return data;
+    }
 
-    /* --------------------------
+    // Obtém os dados dos vídeos a partir do HTML
+    const data = getVideoDataFromHTML();
+
+    /* --------------------------------------------------
        Funções Auxiliares
-       -------------------------- */
+       -------------------------------------------------- */
 
     // Converte links que usam /view para /preview, se necessário
     function formatDriveLink(link) {
@@ -292,7 +314,7 @@
       const mainVideoContainer = document.getElementById('mainVideoContainer');
       mainVideoContainer.innerHTML = "";
       const formattedLink = formatDriveLink(link);
-      // Opcional: acrescenta parâmetro de autoplay se desejado
+      // Adiciona o parâmetro de autoplay
       let finalLink = formattedLink;
       if (finalLink.indexOf("?") === -1) {
         finalLink += "?autoplay=1";
@@ -311,7 +333,6 @@
       const homeView = document.getElementById('homeView');
       const videoView = document.getElementById('videoView');
       const videoTitle = document.getElementById('videoTitle');
-      const mainVideoContainer = document.getElementById('mainVideoContainer');
       const relatedVideosContainer = document.getElementById('relatedVideosContainer');
 
       homeView.style.display = 'none';
