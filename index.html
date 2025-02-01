@@ -113,6 +113,14 @@
       padding: 10px;
       position: relative;
     }
+    /* Configuração do iframe para o vídeo (Google Drive Preview) */
+    #mainVideoContainer iframe {
+      width: 100%;
+      height: 400px;
+      border: 2px solid #00ffea;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0, 255, 234, 0.2);
+    }
     #relatedVideosContainer {
       flex: 1;
       min-width: 250px;
@@ -183,7 +191,7 @@
   <main>
     <!-- Tela Inicial -->
     <div id="homeView">
-      <div id="cardsContainer"><!-- Cartões serão inseridos via JS --></div>
+      <div id="cardsContainer"><!-- Cartões serão inseridos via JavaScript --></div>
       <div id="noResultsMessage">Nenhum resultado encontrado.</div>
     </div>
     <!-- Tela de Vídeo -->
@@ -192,230 +200,144 @@
       <h1 id="videoTitle">Título do Vídeo</h1>
       <div id="videoContainerWrapper">
         <div id="mainVideoContainer">
-          <!-- Vídeo será inserido diretamente via JS -->
+          <!-- O vídeo será carregado aqui via iframe -->
         </div>
         <aside id="relatedVideosContainer">
           <h2>Vídeos Relacionados</h2>
-          <!-- Vídeos relacionados serão inseridos via JS -->
+          <!-- Vídeos relacionados serão inseridos via JavaScript -->
         </aside>
       </div>
     </div>
   </main>
   <script>
     /* --------------------------------------------------
-       Dados das Áreas e Vídeos (Google Drive Preview Links)
+       Dados das Áreas e Vídeos (lista conforme fornecida)
        -------------------------------------------------- */
     const data = {
       "Computadores e Dispositivos": [
-        {
-          title: "O que é um computador",
-          link: "https://drive.google.com/file/d/1bllGB-UZNZJtl1WwAJ-HR_fdBFo7q5G_/preview"
-        },
-        {
-          title: "Tipos de computadores",
-          link: "https://drive.google.com/file/d/1baQOeeQivEQKgFHHgmpyut42OJXnQacX/preview"
-        },
-        {
-          title: "Componentes de um computador",
-          link: "https://drive.google.com/file/d/1b__BL3g-DiGr4jr0xczQYYg-vwqfJhmE/preview"
-        },
-        {
-          title: "Conectando dispositivos de armazenamento",
-          link: "https://drive.google.com/file/d/1bXFvFn3rZ77o4hTkkwHSC_yQjAsNzBqw/preview"
-        },
-        {
-          title: "Conectando dispositivos de Bluetooth",
-          link: "https://drive.google.com/file/d/1bWR0FhgntS0fA3TIlTjQ_QVY0c6T5oqD/preview"
-        }
+        { title: "o que é um computador", link: "https://drive.google.com/file/d/1bllGB-UZNZJtl1WwAJ-HR_fdBFo7q5G_/preview" },
+        { title: "tipos de computadores", link: "https://drive.google.com/file/d/1baQOeeQivEQKgFHHgmpyut42OJXnQacX/preview" },
+        { title: "componentes de um computador", link: "https://drive.google.com/file/d/1b__BL3g-DiGr4jr0xczQYYg-vwqfJhmE/preview" },
+        { title: "conectando dispositivos de armazenamento", link: "https://drive.google.com/file/d/1bXFvFn3rZ77o4hTkkwHSC_yQjAsNzBqw/preview" },
+        { title: "conectando dispositivos de bluetooth", link: "https://drive.google.com/file/d/1bWR0FhgntS0fA3TIlTjQ_QVY0c6T5oqD/preview" }
       ],
       "Microsoft Excel": [
-        {
-          title: "Utilizando Excel Online",
-          link: "https://drive.google.com/file/d/1dhQhEyyO1Dyx7LJv62Wi-R1r3-GAgAiD/preview"
-        },
-        {
-          title: "Criando e salvando pastas de trabalho",
-          link: "https://drive.google.com/file/d/1dwf5EzwBkib-9zV3oW1CFBEBZ4SNh5Wt/preview"
-        },
-        {
-          title: "Utilizando fórmulas básicas no Excel",
-          link: "https://drive.google.com/file/d/1dkCrS7qvWjwfmu_tnyQb8Hy0zcMBSfQi/preview"
-        },
-        {
-          title: "Criando uma tabela simples com Excel",
-          link: "https://drive.google.com/file/d/1dnylVPQ0VrGy1HYUrwsTTmqcXKFH--Ra/preview"
-        },
-        {
-          title: "Modificando abas ou planilhas",
-          link: "https://drive.google.com/file/d/1ditFGulR-HtSQnwjK6S0tRNSG-oUUGcs/preview"
-        },
-        {
-          title: "Validação e formatação de conteúdo",
-          link: "https://drive.google.com/file/d/1dlpwV3lTUL8rmh1pu0cx2ZRr-azUfs8a/preview"
-        }
+        { title: "Utilizando Excel Online", link: "https://drive.google.com/file/d/1dhQhEyyO1Dyx7LJv62Wi-R1r3-GAgAiD/preview" },
+        { title: "Criando e salvando pastas de trabalho", link: "https://drive.google.com/file/d/1dwf5EzwBkib-9zV3oW1CFBEBZ4SNh5Wt/view?usp=drive_link" },
+        { title: "Utilizando fórmulas básicas no Excel", link: "https://drive.google.com/file/d/1dkCrS7qvWjwfmu_tnyQb8Hy0zcMBSfQi/preview" },
+        { title: "Criando uma tabela simples com Excel", link: "https://drive.google.com/file/d/1dnylVPQ0VrGy1HYUrwsTTmqcXKFH--Ra/preview" },
+        { title: "Modificando abas ou planilhas", link: "https://drive.google.com/file/d/1ditFGulR-HtSQnwjK6S0tRNSG-oUUGcs/preview" },
+        { title: "Validação e formatação de conteúdo", link: "https://drive.google.com/file/d/1dlpwV3lTUL8rmh1pu0cx2ZRr-azUfs8a/preview" }
       ],
       "Microsoft PowerPoint": [
-        {
-          title: "Utilizando PowerPoint Online",
-          link: "https://drive.google.com/file/d/1e1bnUh0GK84UEh-dBZrQIs3E28FVQUhM/preview"
-        },
-        {
-          title: "Criando e salvando apresentações",
-          link: "https://drive.google.com/file/d/1e9YFKdAGFScPfoxp5apD8c3U4P_ob_o7/preview"
-        },
-        {
-          title: "Fazer ou gravar uma apresentação de slides",
-          link: "https://drive.google.com/file/d/1e46ibKEtrSeBxTSbTKxqzxuFGmPx9GNh/preview"
-        },
-        {
-          title: "Organizando slides com PowerPoint",
-          link: "https://drive.google.com/file/d/1e8Hz_MCHVNBp7hUbTD9Zm56Ztv5I3CDb/preview"
-        },
-        {
-          title: "Trabalhando temas e imagens no PowerPoint",
-          link: "https://drive.google.com/file/d/1e7LB2r_xgghqmKZp1Lj_rRrEjGK0G3Mt/preview"
-        },
-        {
-          title: "Utilizando o assistente de design",
-          link: "https://drive.google.com/file/d/1e6dLp-qkWZocV_RLgSZT4q27s8c3EmTm/preview"
-        }
+        { title: "Utilizando PowerPoint Online", link: "https://drive.google.com/file/d/1e1bnUh0GK84UEh-dBZrQIs3E28FVQUhM/preview" },
+        { title: "Criando e salvando apresentações", link: "https://drive.google.com/file/d/1e9YFKdAGFScPfoxp5apD8c3U4P_ob_o7/preview" },
+        { title: "Fazer ou gravar uma apresentação de slides", link: "https://drive.google.com/file/d/1e46ibKEtrSeBxTSbTKxqzxuFGmPx9GNh/preview" },
+        { title: "Organizando slides com PowerPoint", link: "https://drive.google.com/file/d/1e8Hz_MCHVNBp7hUbTD9Zm56Ztv5I3CDb/preview" },
+        { title: "Trabalhando temas e imagens no PowerPoint", link: "https://drive.google.com/file/d/1e7LB2r_xgghqmKZp1Lj_rRrEjGK0G3Mt/preview" },
+        { title: "Utilizando o assistente de design", link: "https://drive.google.com/file/d/1e6dLp-qkWZocV_RLgSZT4q27s8c3EmTm/preview" }
       ],
       "Microsoft Word": [
-        {
-          title: "Utilizando Word Online",
-          link: "https://drive.google.com/file/d/1dUgnjR11VRkRYi7oFJOC15LhjNNgNOMe/preview"
-        },
-        {
-          title: "Criando e salvando documentos com Word",
-          link: "https://drive.google.com/file/d/1d_qV-cZ8Kj4L5-Mr5nHSQ_zTFX_8aiuw/preview"
-        },
-        {
-          title: "Formatação de texto utilizando o Word",
-          link: "https://drive.google.com/file/d/1dXuOKtFK8nxONg992QyyyNXzdtX_SnYa/preview"
-        },
-        {
-          title: "Inserindo imagens e outros elementos",
-          link: "https://drive.google.com/file/d/1dV3ez7d_aj6lSHdUawZYu42_eZwUUQ99/preview"
-        },
-        {
-          title: "Encontrar e substituir palavras",
-          link: "https://drive.google.com/file/d/1dWpNG2VqngIbysf3iYsZdMpv7rScY1yj/preview"
-        },
-        {
-          title: "Revisão gramatical no Word",
-          link: "https://drive.google.com/file/d/1dXCzt_aVt9KfQK70ljFtuxZVUJ-DcTuH/preview"
-        }
+        { title: "utilizando word online", link: "https://drive.google.com/file/d/1dUgnjR11VRkRYi7oFJOC15LhjNNgNOMe/preview" },
+        { title: "criando e salvando documentos com word", link: "https://drive.google.com/file/d/1d_qV-cZ8Kj4L5-Mr5nHSQ_zTFX_8aiuw/preview" },
+        { title: "formatação de texto utilizando o word", link: "https://drive.google.com/file/d/1dXuOKtFK8nxONg992QyyyNXzdtX_SnYa/preview" },
+        { title: "inserindo imagens e outros elementos", link: "https://drive.google.com/file/d/1dV3ez7d_aj6lSHdUawZYu42_eZwUUQ99/preview" },
+        { title: "encontrar e substituir palavras", link: "https://drive.google.com/file/d/1dWpNG2VqngIbysf3iYsZdMpv7rScY1yj/preview" },
+        { title: "revisão gramatical no word", link: "https://drive.google.com/file/d/1dXCzt_aVt9KfQK70ljFtuxZVUJ-DcTuH/preview" }
       ],
       "Segurança e Conectividade": [
-        {
-          title: "Configurações de segurança do Windows 10",
-          link: "https://drive.google.com/file/d/1cgdX-oF3xBCS1YVKqKqiuOk_vx2Q3YQh/preview"
-        },
-        {
-          title: "Criando uma senha forte para sua conta",
-          link: "https://drive.google.com/file/d/1cjLjdq4WVtxwLC9RcEwTRPSJRbUYi00o/preview"
-        },
-        {
-          title: "Gerenciando contas no Windows 10",
-          link: "https://drive.google.com/file/d/1cloeB23sPyvMCDadw6UnXdROldLx2ThL/preview"
-        },
-        {
-          title: "Configurando a rede Wi-Fi com o Windows 10",
-          link: "https://drive.google.com/file/d/1cZz4WqcNwCCj9kxwd-3BGA-aOYFf9JE_/preview"
-        },
-        {
-          title: "Conectando-se à internet",
-          link: "https://drive.google.com/file/d/1cg7ylYH4K5Sa4MD7LyaGEgC6TOJmuN6B/preview"
-        },
-        {
-          title: "Mantendo o sistema operacional atualizado",
-          link: "https://drive.google.com/file/d/1cg9wiK59o9OPxxXjmbEIcfw4SMUtQjY6/preview"
-        }
+        { title: "configurações de segurança do windows 10", link: "https://drive.google.com/file/d/1cgdX-oF3xBCS1YVKqKqiuOk_vx2Q3YQh/preview" },
+        { title: "criando uma senha forte para sua conta", link: "https://drive.google.com/file/d/1cjLjdq4WVtxwLC9RcEwTRPSJRbUYi00o/preview" },
+        { title: "gerenciando contas no windows 10", link: "https://drive.google.com/file/d/1cloeB23sPyvMCDadw6UnXdROldLx2ThL/preview" },
+        { title: "configurando a rede wi-fi com o windows 10", link: "https://drive.google.com/file/d/1cZz4WqcNwCCj9kxwd-3BGA-aOYFf9JE_/preview" },
+        { title: "conectando-se à internet", link: "https://drive.google.com/file/d/1cg7ylYH4K5Sa4MD7LyaGEgC6TOJmuN6B/preview" },
+        { title: "mantendo o sistema operacional atualizado", link: "https://drive.google.com/file/d/1cg9wiK59o9OPxxXjmbEIcfw4SMUtQjY6/preview" }
       ],
       "Sistema Operacional": [
-        {
-          title: "O que é um sistema operacional",
-          link: "https://drive.google.com/file/d/1cU7PAuB51ATl6MNq_hNVCfbH--0PyT3C/preview"
-        },
-        {
-          title: "Trabalhando com Windows 10",
-          link: "https://drive.google.com/file/d/1cTPOSGUT2qzBQjFQufRYLGck8sp-nYM6/preview"
-        },
-        {
-          title: "Personalizando sua área de trabalho",
-          link: "https://drive.google.com/file/d/1c2KDvlV63Yn9O5KThEBF_37mLr9QPOSy/preview"
-        },
-        {
-          title: "Organizando janelas dos aplicativos",
-          link: "https://drive.google.com/file/d/1cHLEdQCzdWEateWPzKnAcyP4QU95TRJl/preview"
-        },
-        {
-          title: "Organizando arquivos e pastas",
-          link: "https://drive.google.com/file/d/1cK-O5PzW2y48L6BHBcBEiamGt7mAKmaX/preview"
-        },
-        {
-          title: "Utilizando o botão direito do mouse",
-          link: "https://drive.google.com/file/d/1cHLTH26F30Gc15735WGasV7T_KliaWz0/preview"
-        },
-        {
-          title: "Funcionalidades de acessibilidade",
-          link: "https://drive.google.com/file/d/1bv_eHbUXMbudsg051i_cnmhlzQaKKSOh/preview"
-        }
+        { title: "o que é um sistema operacional", link: "https://drive.google.com/file/d/1cU7PAuB51ATl6MNq_hNVCfbH--0PyT3C/preview" },
+        { title: "trabalhando com windows 10", link: "https://drive.google.com/file/d/1cTPOSGUT2qzBQjFQufRYLGck8sp-nYM6/preview" },
+        { title: "personalizando sua área de trabalho", link: "https://drive.google.com/file/d/1c2KDvlV63Yn9O5KThEBF_37mLr9QPOSy/preview" },
+        { title: "organizando janelas dos aplicativos", link: "https://drive.google.com/file/d/1cHLEdQCzdWEateWPzKnAcyP4QU95TRJl/preview" },
+        { title: "organizando arquivos e pastas", link: "https://drive.google.com/file/d/1cK-O5PzW2y48L6BHBcBEiamGt7mAKmaX/preview" },
+        { title: "utilizando o botão direito do mouse", link: "https://drive.google.com/file/d/1cHLTH26F30Gc15735WGasV7T_KliaWz0/preview" },
+        { title: "funcionalidades de acessibilidade", link: "https://drive.google.com/file/d/1bv_eHbUXMbudsg051i_cnmhlzQaKKSOh/preview" }
       ],
       "Trabalhando com Aplicativos": [
-        {
-          title: "O que são aplicativos",
-          link: "https://drive.google.com/file/d/1dQrncQ6yr427NBRX0mIqmeUOykLMOPwN/preview"
-        },
-        {
-          title: "Instalar e pesquisar aplicativos",
-          link: "https://drive.google.com/file/d/1d56kKiCuFVCD6zcufCyeI-yr9k1UdhzI/preview"
-        },
-        {
-          title: "Aprendendo a usar um novo aplicativo",
-          link: "https://drive.google.com/file/d/1d30gPmrOJLx23jhHxGGe-cZ9OkAlt-4S/preview"
-        },
-        {
-          title: "Aplicativos em dispositivos móveis",
-          link: "https://drive.google.com/file/d/1d0ZWJL0qU0icoOer9q6v1j_x_OSRqiuP/preview"
-        },
-        {
-          title: "Abrir e salvar arquivos",
-          link: "https://drive.google.com/file/d/1dIFcfYmzfharOlX1ToKc3oXjY4a8m0Vr/preview"
-        },
-        {
-          title: "Microsoft Office 2019 versus Microsoft Office 365",
-          link: "https://drive.google.com/file/d/1cx_23WsZWd70rHpAV98rqL9ImPowSkYt/preview"
-        },
-        {
-          title: "Microsoft Office 365 online gratuito",
-          link: "https://drive.google.com/file/d/1cwAoupYCy-pUZI7OghJlWF8GMVzwL0ww/preview"
-        }
+        { title: "o que são aplicativos", link: "https://drive.google.com/file/d/1dQrncQ6yr427NBRX0mIqmeUOykLMOPwN/preview" },
+        { title: "instalar e pesquisar aplicativos", link: "https://drive.google.com/file/d/1d56kKiCuFVCD6zcufCyeI-yr9k1UdhzI/preview" },
+        { title: "aprendendo a usar um novo aplicativo", link: "https://drive.google.com/file/d/1d30gPmrOJLx23jhHxGGe-cZ9OkAlt-4S/preview" },
+        { title: "aplicativos em dispositivos móveis", link: "https://drive.google.com/file/d/1d0ZWJL0qU0icoOer9q6v1j_x_OSRqiuP/preview" },
+        { title: "abrir e salvar arquivos", link: "https://drive.google.com/file/d/1dIFcfYmzfharOlX1ToKc3oXjY4a8m0Vr/preview" },
+        { title: "Microsoft office 2019 versus Microsoft office 365", link: "https://drive.google.com/file/d/1cx_23WsZWd70rHpAV98rqL9ImPowSkYt/preview" },
+        { title: "Microsoft office 365 online gratuito", link: "https://drive.google.com/file/d/1cwAoupYCy-pUZI7OghJlWF8GMVzwL0ww/preview" }
       ]
     };
 
     /* --------------------------
-       Inicialização e Renderização
+       Funções Auxiliares
        -------------------------- */
-    document.addEventListener("DOMContentLoaded", () => {
-      const searchBar = document.getElementById('searchBar');
-      renderAreaCards();
 
-      // Ao digitar na busca, se o campo estiver vazio exibe as áreas; senão, filtra os vídeos
-      searchBar.addEventListener('input', function () {
-        const query = this.value.trim().toLowerCase();
-        if (query === "") {
-          document.getElementById('noResultsMessage').style.display = 'none';
-          renderAreaCards();
-        } else {
-          renderFilteredVideos(query);
+    // Converte links que usam /view para /preview, se necessário
+    function formatDriveLink(link) {
+      if (link.indexOf("/preview") !== -1) {
+        return link;
+      } else if (link.indexOf("/view") !== -1) {
+        return link.replace("/view", "/preview");
+      }
+      return link;
+    }
+
+    // Carrega o vídeo no iframe usando o link formatado
+    function loadVideo(link) {
+      const mainVideoContainer = document.getElementById('mainVideoContainer');
+      mainVideoContainer.innerHTML = "";
+      const formattedLink = formatDriveLink(link);
+      // Opcional: acrescenta parâmetro de autoplay se desejado
+      let finalLink = formattedLink;
+      if (finalLink.indexOf("?") === -1) {
+        finalLink += "?autoplay=1";
+      } else {
+        finalLink += "&autoplay=1";
+      }
+      const iframe = document.createElement('iframe');
+      iframe.src = finalLink;
+      iframe.setAttribute("allow", "autoplay; encrypted-media");
+      iframe.setAttribute("allowfullscreen", "true");
+      mainVideoContainer.appendChild(iframe);
+    }
+
+    // Exibe a tela de vídeo com o título, o vídeo principal e a lista de vídeos relacionados
+    function showVideoView(area, videoIndex) {
+      const homeView = document.getElementById('homeView');
+      const videoView = document.getElementById('videoView');
+      const videoTitle = document.getElementById('videoTitle');
+      const mainVideoContainer = document.getElementById('mainVideoContainer');
+      const relatedVideosContainer = document.getElementById('relatedVideosContainer');
+
+      homeView.style.display = 'none';
+      videoView.style.display = 'block';
+
+      const { title, link } = data[area][videoIndex];
+      videoTitle.textContent = title;
+      loadVideo(link);
+
+      // Renderiza a lista de vídeos relacionados
+      relatedVideosContainer.innerHTML = '<h2>Vídeos Relacionados</h2>';
+      data[area].forEach((video, index) => {
+        const videoCard = document.createElement('div');
+        videoCard.className = 'videoCard';
+        videoCard.textContent = video.title;
+        if (index === videoIndex) {
+          videoCard.classList.add('current');
         }
+        videoCard.addEventListener('click', () => {
+          showVideoView(area, index);
+        });
+        relatedVideosContainer.appendChild(videoCard);
       });
+    }
 
-      document.getElementById('backButton').addEventListener('click', stopVideoAndShowHome);
-    });
-
-    // Renderiza os cartões de áreas na tela inicial
+    // Renderiza os cartões das áreas na tela inicial
     function renderAreaCards() {
       const cardsContainer = document.getElementById('cardsContainer');
       cardsContainer.innerHTML = "";
@@ -459,70 +381,12 @@
       card.className = 'card';
       card.innerHTML = `<h2>${area}</h2>`;
       card.addEventListener('click', () => {
-        // Exibe o primeiro vídeo da área
         showVideoView(area, 0);
       });
       container.appendChild(card);
     }
 
-    // Exibe a tela de vídeo com título, vídeo e lista de vídeos relacionados
-    function showVideoView(area, videoIndex) {
-      const homeView = document.getElementById('homeView');
-      const videoView = document.getElementById('videoView');
-      const videoTitle = document.getElementById('videoTitle');
-      const mainVideoContainer = document.getElementById('mainVideoContainer');
-      const relatedVideosContainer = document.getElementById('relatedVideosContainer');
-
-      homeView.style.display = 'none';
-      videoView.style.display = 'block';
-
-      const { title, link } = data[area][videoIndex];
-      videoTitle.textContent = title;
-
-      // Carrega o vídeo diretamente, sem exibir uma thumbnail
-      loadVideo(link);
-
-      // Renderiza a lista de vídeos relacionados
-      relatedVideosContainer.innerHTML = '<h2>Vídeos Relacionados</h2>';
-      data[area].forEach((video, index) => {
-        const videoCard = document.createElement('div');
-        videoCard.className = 'videoCard';
-        videoCard.textContent = video.title;
-        if (index === videoIndex) {
-          videoCard.classList.add('current');
-        }
-        videoCard.addEventListener('click', () => {
-          showVideoView(area, index);
-        });
-        relatedVideosContainer.appendChild(videoCard);
-      });
-    }
-
-    // Carrega e insere o iframe do vídeo diretamente
-    function loadVideo(link) {
-      const mainVideoContainer = document.getElementById('mainVideoContainer');
-      mainVideoContainer.innerHTML = "";
-      
-      const iframe = document.createElement('iframe');
-      // Acrescenta o parâmetro autoplay=1, se ainda não estiver presente
-      let srcWithAutoplay = link;
-      if (!link.includes('autoplay=1')) {
-        srcWithAutoplay += (link.includes('?') ? '&' : '?') + 'autoplay=1';
-      }
-      iframe.src = srcWithAutoplay;
-      iframe.allow = "autoplay; fullscreen";
-      iframe.setAttribute("allowfullscreen", "true");
-      iframe.style.width = '100%';
-      iframe.style.height = '400px';
-      iframe.style.border = '2px solid #00ffea';
-      iframe.style.borderRadius = '8px';
-      iframe.style.boxShadow = '0 0 8px rgba(0, 255, 234, 0.2)';
-      iframe.frameBorder = "0";
-
-      mainVideoContainer.appendChild(iframe);
-    }
-
-    // Remove o conteúdo de vídeo e retorna para a tela inicial
+    // Para o vídeo (limpa o container) e retorna para a tela inicial
     function stopVideoAndShowHome() {
       const homeView = document.getElementById('homeView');
       const videoView = document.getElementById('videoView');
@@ -531,6 +395,26 @@
       videoView.style.display = 'none';
       homeView.style.display = 'block';
     }
+
+    /* --------------------------
+       Inicialização
+       -------------------------- */
+    document.addEventListener("DOMContentLoaded", () => {
+      const searchBar = document.getElementById('searchBar');
+      renderAreaCards();
+
+      searchBar.addEventListener('input', function () {
+        const query = this.value.trim().toLowerCase();
+        if (query === "") {
+          document.getElementById('noResultsMessage').style.display = 'none';
+          renderAreaCards();
+        } else {
+          renderFilteredVideos(query);
+        }
+      });
+
+      document.getElementById('backButton').addEventListener('click', stopVideoAndShowHome);
+    });
   </script>
 </body>
 </html>
