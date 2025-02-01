@@ -5,6 +5,21 @@
   <title>Vídeo-Aula</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    /* Classes utilitárias */
+    .hidden {
+      display: none;
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+    
     /* ----------------------------
        Estilos Gerais
        ---------------------------- */
@@ -186,11 +201,13 @@
 <body>
   <header>
     <h1>Vídeo-Aula</h1>
+    <!-- Label oculto para acessibilidade -->
+    <label for="searchBar" class="sr-only">Pesquisar vídeos ou temáticas</label>
     <input type="text" id="searchBar" placeholder="Pesquisar vídeos ou temáticas...">
   </header>
   <main>
-    <!-- Dados dos Vídeos (ocultos na página) -->
-    <div id="videoData" style="display: none;">
+    <!-- Dados dos Vídeos (ocultos via classe .hidden) -->
+    <div id="videoData" class="hidden">
       <!-- Categoria: Computadores e Dispositivos -->
       <div data-area="Computadores e Dispositivos">
         <div data-title="o que é um computador" data-link="https://drive.google.com/file/d/1bllGB-UZNZJtl1WwAJ-HR_fdBFo7q5G_/preview"></div>
@@ -264,7 +281,7 @@
     </div>
     <!-- Tela de Vídeo -->
     <div id="videoView">
-      <button id="backButton">← Voltar</button>
+      <button id="backButton" aria-label="Voltar para a tela inicial">← Voltar</button>
       <h1 id="videoTitle">Título do Vídeo</h1>
       <div id="videoContainerWrapper">
         <div id="mainVideoContainer">
@@ -278,6 +295,15 @@
     </div>
   </main>
   <script>
+    // Função debounce para otimizar a busca (evita disparar a cada tecla)
+    function debounce(func, delay) {
+      let timeout;
+      return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), delay);
+      }
+    }
+
     // --- Função para coletar os dados dos vídeos a partir do HTML ---
     function getVideoDataFromHTML() {
       const videoDataContainer = document.getElementById('videoData');
@@ -307,24 +333,22 @@
 
     // Converte links que usam /view para /preview, se necessário
     function formatDriveLink(link) {
-      if (link.indexOf("/preview") !== -1) {
+      if (link.includes("/preview")) {
         return link;
-      } else if (link.indexOf("/view") !== -1) {
+      } else if (link.includes("/view")) {
         return link.replace("/view", "/preview");
       }
       return link;
     }
 
     // Carrega o vídeo no iframe usando o link formatado
-    // Agora, removemos o parâmetro autoplay para que o vídeo seja executado apenas ao toque do usuário.
+    // O parâmetro autoplay foi removido para que o vídeo inicie apenas com o toque do usuário.
     function loadVideo(link) {
       const mainVideoContainer = document.getElementById('mainVideoContainer');
       mainVideoContainer.innerHTML = "";
       const formattedLink = formatDriveLink(link);
-      // Não adiciona o parâmetro autoplay
       const iframe = document.createElement('iframe');
       iframe.src = formattedLink;
-      // Alterado o atributo "allow" para não incluir autoplay automaticamente
       iframe.setAttribute("allow", "encrypted-media");
       iframe.setAttribute("allowfullscreen", "true");
       mainVideoContainer.appendChild(iframe);
@@ -354,10 +378,14 @@
           videoCard.classList.add('current');
         }
         videoCard.addEventListener('click', () => {
+          history.pushState({ view: 'video', area, videoIndex: index }, "", `#video-${area}-${index}`);
           showVideoView(area, index);
         });
         relatedVideosContainer.appendChild(videoCard);
       });
+
+      // Atualiza o estado da URL para a visualização de vídeo
+      history.pushState({ view: 'video', area, videoIndex }, "", `#video-${area}-${videoIndex}`);
     }
 
     // Renderiza os cartões das áreas na tela inicial
@@ -391,6 +419,7 @@
           card.className = 'card';
           card.innerHTML = `<h2>${item.video.title}</h2><p>${item.area}</p>`;
           card.addEventListener('click', () => {
+            history.pushState({ view: 'video', area: item.area, videoIndex: item.index }, "", `#video-${item.area}-${item.index}`);
             showVideoView(item.area, item.index);
           });
           cardsContainer.appendChild(card);
@@ -404,6 +433,7 @@
       card.className = 'card';
       card.innerHTML = `<h2>${area}</h2>`;
       card.addEventListener('click', () => {
+        history.pushState({ view: 'video', area, videoIndex: 0 }, "", `#video-${area}-0`);
         showVideoView(area, 0);
       });
       container.appendChild(card);
@@ -417,6 +447,8 @@
       mainVideoContainer.innerHTML = '';
       videoView.style.display = 'none';
       homeView.style.display = 'block';
+      // Atualiza o estado da URL para a tela inicial
+      history.pushState({ view: 'home' }, "", "#home");
     }
 
     /* --------------------------
@@ -426,7 +458,8 @@
       const searchBar = document.getElementById('searchBar');
       renderAreaCards();
 
-      searchBar.addEventListener('input', function () {
+      // Evento de busca com debounce para melhor performance
+      searchBar.addEventListener('input', debounce(function () {
         const query = this.value.trim().toLowerCase();
         if (query === "") {
           document.getElementById('noResultsMessage').style.display = 'none';
@@ -434,9 +467,32 @@
         } else {
           renderFilteredVideos(query);
         }
+      }, 300));
+
+      // Botão de voltar: utiliza History API para retornar ao estado anterior
+      document.getElementById('backButton').addEventListener('click', () => {
+        history.back();
       });
 
-      document.getElementById('backButton').addEventListener('click', stopVideoAndShowHome);
+      // Configura o estado inicial da URL, se não houver hash
+      if (!location.hash) {
+        history.replaceState({ view: 'home' }, "", "#home");
+      }
+
+      // Lida com a navegação do histórico (botões do navegador)
+      window.addEventListener('popstate', (event) => {
+        const state = event.state;
+        if (state) {
+          if (state.view === 'home') {
+            stopVideoAndShowHome();
+          } else if (state.view === 'video') {
+            showVideoView(state.area, state.videoIndex);
+          }
+        } else {
+          // Se não houver estado, retorna à tela inicial
+          stopVideoAndShowHome();
+        }
+      });
     });
   </script>
 </body>
