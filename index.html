@@ -341,7 +341,7 @@
       return link;
     }
 
-    // Carrega o vídeo no iframe usando o link formatado
+    // Carrega o vídeo no iframe usando o link formatado.
     // O parâmetro autoplay foi removido para que o vídeo inicie apenas com o toque do usuário.
     function loadVideo(link) {
       const mainVideoContainer = document.getElementById('mainVideoContainer');
@@ -383,7 +383,7 @@
         relatedVideosContainer.appendChild(videoCard);
       });
 
-      // Atualiza o estado da URL para a visualização de vídeo (única atualização de pushState)
+      // Atualiza o estado da URL para a visualização de vídeo
       history.pushState({ view: 'video', area, videoIndex }, "", `#video-${area}-${videoIndex}`);
     }
 
@@ -466,10 +466,8 @@
         }
       }, 300));
 
-      // Botão de voltar: utiliza History API para retornar ao estado anterior
-      document.getElementById('backButton').addEventListener('click', () => {
-        history.back();
-      });
+      // Botão de voltar: agora sempre retorna à tela inicial, sem depender do histórico
+      document.getElementById('backButton').addEventListener('click', stopVideoAndShowHome);
 
       // Configura o estado inicial da URL, se não houver hash
       if (!location.hash) {
