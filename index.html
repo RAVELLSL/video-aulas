@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -5,6 +6,25 @@
   <title>Vídeo-Aula</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    :root {
+      --bg: #f5f8ff;
+      --surface: #ffffff;
+      --surface-soft: #f1f8ff;
+      --text-main: #1b2140;
+      --text-muted: #5f6892;
+      --brand: #2e6cff;
+      --brand-strong: #1e4ed8;
+      --accent: #00d8ff;
+      --accent-soft: #e9fbff;
+      --danger: #e24b5f;
+      --focus-ring: rgba(0, 216, 255, 0.33);
+      --header-glass: rgba(255, 255, 255, 0.86);
+      --glow-soft: rgba(0, 216, 255, 0.28);
+      --glow-strong: rgba(46, 108, 255, 0.2);
+      --video-bg: #121327;
+      --on-brand: #ffffff;
+    }
+
     /* Classes utilitárias */
     .hidden {
       display: none;
@@ -30,43 +50,57 @@
     }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f9f9f9;
-      color: #333;
+      background:
+        radial-gradient(circle at 12% 14%, rgba(0, 216, 255, 0.2), transparent 42%),
+        radial-gradient(circle at 86% 4%, rgba(78, 255, 194, 0.2), transparent 36%),
+        linear-gradient(180deg, #fbfdff 0%, var(--bg) 52%, #f1f4ff 100%);
+      color: var(--text-main);
       transition: background 0.5s, color 0.5s;
+      line-height: 1.45;
+      overflow-x: hidden;
     }
     header {
-      background: #ffffff;
-      border-bottom: 3px solid #00ffea;
+      background: var(--header-glass);
+      border-bottom: 3px solid var(--accent);
       padding: 20px;
       text-align: center;
       position: sticky;
       top: 0;
       z-index: 1000;
+      backdrop-filter: blur(6px);
     }
     header h1 {
       margin: 0;
       font-size: 2em;
-      color: #00b5ad;
+      color: var(--brand);
     }
     #searchBar {
       margin-top: 15px;
       padding: 10px;
       width: 80%;
       max-width: 500px;
-      border: 2px solid #00ffea;
+      border: 2px solid var(--accent);
       border-radius: 5px;
       font-size: 1em;
       outline: none;
       transition: box-shadow 0.3s, border 0.3s;
+      background: var(--surface);
+      color: var(--text-main);
     }
+
+    #resultsInfo {
+      margin-top: 10px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
     #searchBar:focus {
-      box-shadow: 0 0 8px 2px #00ffea;
-      border-color: #00ffea;
+      box-shadow: 0 0 0 4px var(--focus-ring);
+      border-color: var(--brand);
     }
     main {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      width: min(1200px, 100%);
+      margin: 0 auto;
       padding: 20px;
       min-height: 80vh;
     }
@@ -75,36 +109,57 @@
       width: 100%;
     }
     #cardsContainer {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 20px;
-      justify-content: center;
       margin-top: 20px;
     }
     .card {
-      background: #ffffff;
-      border: 2px solid #00ffea;
+      background: var(--surface);
+      border: 2px solid var(--accent);
       border-radius: 10px;
-      width: 250px;
       padding: 20px;
-      text-align: center;
+      text-align: left;
       cursor: pointer;
       transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+      width: 100%;
+      appearance: none;
+      font: inherit;
+      color: inherit;
     }
     .card h2 {
-      margin: 0;
+      margin: 0 0 6px 0;
       font-size: 1.2em;
-      color: #00b5ad;
+      color: var(--brand);
+      text-transform: capitalize;
+    }
+    .card .match {
+      background: linear-gradient(120deg, rgba(0, 216, 255, 0.28), rgba(46, 108, 255, 0.22));
+      color: inherit;
+      padding: 0 3px;
+      border-radius: 4px;
+    }
+    .card p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--text-muted);
     }
     .card:hover {
       transform: scale(1.04);
-      background: #f0fdfd;
-      box-shadow: 0 0 10px rgba(0, 255, 234, 0.2);
+      background: var(--surface-soft);
+      box-shadow: 0 0 0 1px var(--glow-soft), 0 14px 30px var(--glow-strong);
+    }
+    .card:focus-visible,
+    .videoCard:focus-visible,
+    #backButton:focus-visible,
+    #searchBar:focus-visible {
+      outline: 3px solid var(--focus-ring);
+      outline-offset: 2px;
     }
     #noResultsMessage {
       font-size: 1em;
       text-align: center;
-      color: #e74c3c;
+      color: var(--danger);
       margin-top: 20px;
       display: none;
     }
@@ -112,49 +167,64 @@
     #videoView {
       display: none;
       width: 100%;
+      min-width: 0;
     }
     #videoTitle {
       margin: 0 0 15px 0;
-      font-size: 1.8em;
-      color: #00b5ad;
+      font-size: clamp(1.35rem, 2.6vw, 1.95rem);
+      color: var(--brand);
+      line-height: 1.2;
     }
     #videoContainerWrapper {
       display: flex;
       flex-wrap: wrap;
+      gap: 12px;
+      align-items: flex-start;
+      width: 100%;
+      min-width: 0;
     }
     #mainVideoContainer {
-      flex: 3;
-      min-width: 300px;
-      padding: 10px;
+      flex: 3 1 560px;
+      min-width: 0;
+      padding: 10px 10px 10px 0;
       position: relative;
     }
     /* Configuração do iframe para o vídeo (Google Drive Preview) */
     #mainVideoContainer iframe {
       width: 100%;
-      height: 400px;
-      border: 2px solid #00ffea;
+      aspect-ratio: 16 / 9;
+      min-height: 280px;
+      height: auto;
+      border: 2px solid var(--accent);
       border-radius: 8px;
-      box-shadow: 0 0 8px rgba(0, 255, 234, 0.2);
+      box-shadow: 0 14px 28px var(--glow-strong);
+      background: var(--video-bg);
     }
     #relatedVideosContainer {
-      flex: 1;
-      min-width: 250px;
-      background: #ffffff;
-      border: 2px solid #00ffea;
+      flex: 1 1 280px;
+      min-width: 0;
+      background: var(--surface);
+      border: 2px solid var(--accent);
       border-radius: 10px;
-      margin: 10px;
+      margin: 0;
       max-height: 500px;
       overflow-y: auto;
       padding: 10px;
+      scrollbar-gutter: stable;
     }
     #relatedVideosContainer h2 {
       margin-top: 0;
       margin-bottom: 10px;
-      color: #00b5ad;
+      color: var(--brand);
     }
     .videoCard {
-      background: #f9f9f9;
-      border: 1px solid #00ffea;
+      width: 100%;
+      text-align: left;
+      appearance: none;
+      font: inherit;
+      color: inherit;
+      background: var(--surface-soft);
+      border: 1px solid var(--accent);
       border-radius: 5px;
       margin-bottom: 10px;
       padding: 10px;
@@ -162,15 +232,26 @@
       transition: background 0.3s, transform 0.3s;
     }
     .videoCard:hover {
-      background: #f0fdfd;
+      background: var(--accent-soft);
       transform: scale(1.02);
     }
     .videoCard.current {
-      background: #e3f7f7;
+      background: var(--accent-soft);
       font-weight: bold;
+      border-color: var(--brand);
+    }
+
+    .chip {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      background: var(--accent-soft);
+      color: var(--brand-strong);
+      margin-bottom: 10px;
     }
     #backButton {
-      background: #00b5ad;
+      background: linear-gradient(135deg, var(--brand), var(--accent));
       border: none;
       padding: 10px 20px;
       border-radius: 5px;
@@ -178,22 +259,96 @@
       font-size: 1em;
       transition: background 0.3s;
       margin-bottom: 20px;
-      color: #fff;
+      color: var(--on-brand);
       margin-right: 10px;
     }
     #backButton:hover {
-      background: #009b95;
+      background: linear-gradient(135deg, var(--brand-strong), var(--brand));
     }
     /* Responsividade */
     @media (max-width: 768px) {
+      main {
+        padding: 14px;
+      }
+      header h1 {
+        font-size: 1.6rem;
+      }
+      #searchBar {
+        width: 100%;
+      }
       #mainVideoContainer iframe {
-        height: 250px;
+        min-height: 210px;
+      }
+      #videoContainerWrapper {
+        gap: 10px;
       }
       #relatedVideosContainer {
         flex-basis: 100%;
         max-height: none;
         margin-top: 0;
         margin-bottom: 10px;
+      }
+      #mainVideoContainer {
+        padding: 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 14px 12px;
+      }
+      header h1 {
+        font-size: 1.35rem;
+      }
+      #searchBar {
+        margin-top: 10px;
+        padding: 9px 10px;
+        font-size: 0.95rem;
+      }
+      #resultsInfo {
+        font-size: 0.86rem;
+      }
+      main {
+        padding: 10px;
+      }
+      #cardsContainer {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .card {
+        padding: 14px;
+      }
+      #backButton {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 12px;
+      }
+      #mainVideoContainer iframe {
+        min-height: 190px;
+      }
+      #relatedVideosContainer {
+        padding: 8px;
+      }
+      .videoCard {
+        padding: 9px;
+      }
+    }
+
+    @media (max-height: 560px) {
+      header {
+        position: static;
+      }
+      main {
+        min-height: auto;
+      }
+    }
+
+    @media (min-width: 1500px) {
+      main {
+        width: min(1380px, 100%);
+      }
+      #mainVideoContainer iframe {
+        min-height: 340px;
       }
     }
   </style>
@@ -204,6 +359,7 @@
     <!-- Label oculto para acessibilidade -->
     <label for="searchBar" class="sr-only">Pesquisar vídeos ou temáticas</label>
     <input type="text" id="searchBar" placeholder="Pesquisar vídeos ou temáticas...">
+    <div id="resultsInfo" aria-live="polite"></div>
   </header>
   <main>
     <!-- Dados dos Vídeos (ocultos via classe .hidden) -->
@@ -277,7 +433,7 @@
     <!-- Tela Inicial -->
     <div id="homeView">
       <div id="cardsContainer"><!-- Os cartões serão gerados dinamicamente a partir dos dados do HTML --></div>
-      <div id="noResultsMessage">Nenhum resultado encontrado.</div>
+      <div id="noResultsMessage" role="status" aria-live="polite">Nenhum resultado encontrado.</div>
     </div>
     <!-- Tela de Vídeo -->
     <div id="videoView">
@@ -295,199 +451,343 @@
     </div>
   </main>
   <script>
-    // Função debounce para otimizar a busca (evita disparar a cada tecla)
     function debounce(func, delay) {
       let timeout;
-      return function(...args) {
+      return function (...args) {
         clearTimeout(timeout);
         timeout = setTimeout(() => func.apply(this, args), delay);
-      }
+      };
     }
 
-    // --- Função para coletar os dados dos vídeos a partir do HTML ---
     function getVideoDataFromHTML() {
       const videoDataContainer = document.getElementById('videoData');
       const data = {};
-      // Seleciona cada categoria (div com data-area)
       const categoryDivs = videoDataContainer.querySelectorAll('div[data-area]');
+
       categoryDivs.forEach(categoryDiv => {
-        const area = categoryDiv.getAttribute('data-area');
+        const area = categoryDiv.getAttribute('data-area') || 'Sem categoria';
         data[area] = [];
-        // Seleciona cada vídeo dentro da categoria
+
         const videoDivs = categoryDiv.querySelectorAll('div[data-title]');
         videoDivs.forEach(videoDiv => {
-          const title = videoDiv.getAttribute('data-title');
-          const link = videoDiv.getAttribute('data-link');
+          const title = videoDiv.getAttribute('data-title') || 'Vídeo sem título';
+          const link = videoDiv.getAttribute('data-link') || '';
           data[area].push({ title, link });
         });
       });
+
       return data;
     }
 
-    // Obtém os dados dos vídeos a partir do HTML
-    const data = getVideoDataFromHTML();
-
-    /* --------------------------------------------------
-       Funções Auxiliares
-       -------------------------------------------------- */
-
-    // Converte links que usam /view para /preview, se necessário
     function formatDriveLink(link) {
-      if (link.includes("/preview")) {
-        return link;
-      } else if (link.includes("/view")) {
-        return link.replace("/view", "/preview");
-      }
+      if (!link) return '';
+      if (link.includes('/preview')) return link;
+      if (link.includes('/view')) return link.replace(/\/view(\?.*)?$/, '/preview');
       return link;
     }
 
-    // Carrega o vídeo no iframe usando o link formatado.
-    // O parâmetro autoplay foi removido para que o vídeo inicie apenas com o toque do usuário.
-    function loadVideo(link) {
-      const mainVideoContainer = document.getElementById('mainVideoContainer');
-      mainVideoContainer.innerHTML = "";
-      const formattedLink = formatDriveLink(link);
-      const iframe = document.createElement('iframe');
-      iframe.src = formattedLink;
-      iframe.setAttribute("allow", "encrypted-media");
-      iframe.setAttribute("allowfullscreen", "true");
-      mainVideoContainer.appendChild(iframe);
+    function encodeHash(area, index) {
+      return `#video=${encodeURIComponent(area)}&index=${index}`;
     }
 
-    // Exibe a tela de vídeo com o título, o vídeo principal e a lista de vídeos relacionados
-    function showVideoView(area, videoIndex) {
+    function decodeHash(hash) {
+      const match = hash.match(/^#video=([^&]+)&index=(\d+)$/);
+      if (!match) return null;
+      return {
+        area: decodeURIComponent(match[1]),
+        videoIndex: Number(match[2])
+      };
+    }
+
+    function normalizeText(text) {
+      return String(text || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+    }
+
+    function escapeHtml(text) {
+      return String(text || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function getQueryTokens(query) {
+      return normalizeText(query)
+        .split(/\s+/)
+        .filter(token => token.length > 0);
+    }
+
+    function getRawQueryTokens(query) {
+      return String(query || '')
+        .trim()
+        .split(/\s+/)
+        .filter(token => token.length > 0);
+    }
+
+    function scoreMatch(title, area, tokens, rawQuery) {
+      const titleNorm = normalizeText(title);
+      const areaNorm = normalizeText(area);
+      const queryNorm = normalizeText(rawQuery);
+      let score = 0;
+
+      if (!queryNorm) return 0;
+
+      if (titleNorm === queryNorm) score += 120;
+      if (areaNorm === queryNorm) score += 100;
+      if (titleNorm.startsWith(queryNorm)) score += 80;
+      if (areaNorm.startsWith(queryNorm)) score += 55;
+
+      let matchedTokens = 0;
+      tokens.forEach(token => {
+        if (titleNorm.includes(token)) {
+          score += 22;
+          matchedTokens += 1;
+        } else if (areaNorm.includes(token)) {
+          score += 12;
+          matchedTokens += 1;
+        }
+      });
+
+      if (matchedTokens === tokens.length && tokens.length > 0) {
+        score += 30;
+      }
+
+      return score;
+    }
+
+    function highlightText(text, tokens) {
+      if (!tokens.length) return escapeHtml(text);
+      const escapedText = escapeHtml(text);
+      const safeTokens = tokens
+        .map(token => escapeHtml(token))
+        .filter(Boolean)
+        .sort((a, b) => b.length - a.length);
+
+      if (!safeTokens.length) return escapedText;
+
+      const regex = new RegExp(`(${safeTokens.map(token => token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'ig');
+      return escapedText.replace(regex, '<span class="match">$1</span>');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const data = getVideoDataFromHTML();
+      const areas = Object.keys(data);
+
+      const searchBar = document.getElementById('searchBar');
+      const resultsInfo = document.getElementById('resultsInfo');
+      const cardsContainer = document.getElementById('cardsContainer');
+      const noResultsMessage = document.getElementById('noResultsMessage');
       const homeView = document.getElementById('homeView');
       const videoView = document.getElementById('videoView');
       const videoTitle = document.getElementById('videoTitle');
-      const relatedVideosContainer = document.getElementById('relatedVideosContainer');
-
-      homeView.style.display = 'none';
-      videoView.style.display = 'block';
-
-      const { title, link } = data[area][videoIndex];
-      videoTitle.textContent = title;
-      loadVideo(link);
-
-      // Renderiza a lista de vídeos relacionados
-      relatedVideosContainer.innerHTML = '<h2>Vídeos Relacionados</h2>';
-      data[area].forEach((video, index) => {
-        const videoCard = document.createElement('div');
-        videoCard.className = 'videoCard';
-        videoCard.textContent = video.title;
-        if (index === videoIndex) {
-          videoCard.classList.add('current');
-        }
-        videoCard.addEventListener('click', () => {
-          showVideoView(area, index);
-        });
-        relatedVideosContainer.appendChild(videoCard);
-      });
-
-      // Atualiza o estado da URL para a visualização de vídeo
-      history.pushState({ view: 'video', area, videoIndex }, "", `#video-${area}-${videoIndex}`);
-    }
-
-    // Renderiza os cartões das áreas na tela inicial
-    function renderAreaCards() {
-      const cardsContainer = document.getElementById('cardsContainer');
-      cardsContainer.innerHTML = "";
-      for (let area in data) {
-        createAreaCard(cardsContainer, area);
-      }
-    }
-
-    // Renderiza os cartões com vídeos filtrados pela busca
-    function renderFilteredVideos(query) {
-      const cardsContainer = document.getElementById('cardsContainer');
-      const noResultsMessage = document.getElementById('noResultsMessage');
-      const filteredVideos = [];
-      for (let area in data) {
-        data[area].forEach((video, index) => {
-          if (video.title.toLowerCase().includes(query) || area.toLowerCase().includes(query)) {
-            filteredVideos.push({ area, video, index });
-          }
-        });
-      }
-      cardsContainer.innerHTML = "";
-      if (filteredVideos.length === 0) {
-        noResultsMessage.style.display = 'block';
-      } else {
-        noResultsMessage.style.display = 'none';
-        filteredVideos.forEach(item => {
-          const card = document.createElement('div');
-          card.className = 'card';
-          card.innerHTML = `<h2>${item.video.title}</h2><p>${item.area}</p>`;
-          card.addEventListener('click', () => {
-            showVideoView(item.area, item.index);
-          });
-          cardsContainer.appendChild(card);
-        });
-      }
-    }
-
-    // Cria um cartão para cada área
-    function createAreaCard(container, area) {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `<h2>${area}</h2>`;
-      card.addEventListener('click', () => {
-        showVideoView(area, 0);
-      });
-      container.appendChild(card);
-    }
-
-    // Para o vídeo (limpa o container) e retorna para a tela inicial
-    function stopVideoAndShowHome() {
-      const homeView = document.getElementById('homeView');
-      const videoView = document.getElementById('videoView');
       const mainVideoContainer = document.getElementById('mainVideoContainer');
-      mainVideoContainer.innerHTML = '';
-      videoView.style.display = 'none';
-      homeView.style.display = 'block';
-      // Atualiza o estado da URL para a tela inicial
-      history.pushState({ view: 'home' }, "", "#home");
-    }
+      const relatedVideosContainer = document.getElementById('relatedVideosContainer');
+      const backButton = document.getElementById('backButton');
 
-    /* --------------------------
-       Inicialização
-       -------------------------- */
-    document.addEventListener("DOMContentLoaded", () => {
-      const searchBar = document.getElementById('searchBar');
-      renderAreaCards();
+      function updateResultsInfo(message) {
+        resultsInfo.textContent = message;
+      }
 
-      // Evento de busca com debounce para melhor performance
+      function createCardElement({ title, subtitle, onClick, useHtml = false }) {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'card';
+
+        const heading = document.createElement('h2');
+        if (useHtml) {
+          heading.innerHTML = title;
+        } else {
+          heading.textContent = title;
+        }
+        card.appendChild(heading);
+
+        if (subtitle) {
+          const description = document.createElement('p');
+          if (useHtml) {
+            description.innerHTML = subtitle;
+          } else {
+            description.textContent = subtitle;
+          }
+          card.appendChild(description);
+        }
+
+        card.addEventListener('click', onClick);
+        return card;
+      }
+
+      function loadVideo(link, title) {
+        mainVideoContainer.innerHTML = '';
+        const formattedLink = formatDriveLink(link);
+
+        if (!formattedLink) {
+          mainVideoContainer.innerHTML = '<p>Não foi possível carregar este vídeo.</p>';
+          return;
+        }
+
+        const iframe = document.createElement('iframe');
+        iframe.src = formattedLink;
+        iframe.title = `Vídeo-aula: ${title}`;
+        iframe.setAttribute('allow', 'encrypted-media; picture-in-picture');
+        iframe.setAttribute('allowfullscreen', 'true');
+        iframe.setAttribute('loading', 'lazy');
+        mainVideoContainer.appendChild(iframe);
+      }
+
+      function showVideoView(area, videoIndex, options = {}) {
+        const { pushHistory = true } = options;
+        if (!data[area] || !data[area][videoIndex]) return;
+
+        homeView.style.display = 'none';
+        videoView.style.display = 'block';
+
+        const video = data[area][videoIndex];
+        videoTitle.textContent = video.title;
+        loadVideo(video.link, video.title);
+
+        relatedVideosContainer.innerHTML = '<h2>Vídeos Relacionados</h2>';
+        data[area].forEach((item, index) => {
+          const card = document.createElement('button');
+          card.type = 'button';
+          card.className = 'videoCard';
+          card.textContent = item.title;
+          if (index === videoIndex) card.classList.add('current');
+          card.addEventListener('click', () => showVideoView(area, index));
+          relatedVideosContainer.appendChild(card);
+        });
+
+        if (pushHistory) {
+          history.pushState({ view: 'video', area, videoIndex }, '', encodeHash(area, videoIndex));
+        }
+      }
+
+      function showHomeView(options = {}) {
+        const { pushHistory = true } = options;
+        mainVideoContainer.innerHTML = '';
+        videoView.style.display = 'none';
+        homeView.style.display = 'block';
+        if (pushHistory) {
+          history.pushState({ view: 'home' }, '', '#home');
+        }
+      }
+
+      function renderAreaCards() {
+        cardsContainer.innerHTML = '';
+        const fragment = document.createDocumentFragment();
+
+        areas.forEach(area => {
+          const total = data[area].length;
+          const card = createCardElement({
+            title: area,
+            subtitle: `${total} vídeo${total > 1 ? 's' : ''}`,
+            onClick: () => showVideoView(area, 0)
+          });
+          fragment.appendChild(card);
+        });
+
+        cardsContainer.appendChild(fragment);
+        noResultsMessage.style.display = 'none';
+        updateResultsInfo(`${areas.length} temáticas disponíveis`);
+      }
+
+      function renderFilteredVideos(query) {
+        const rawTokens = getRawQueryTokens(query);
+        const tokens = getQueryTokens(query);
+        const filtered = [];
+
+        areas.forEach(area => {
+          data[area].forEach((video, index) => {
+            const score = scoreMatch(video.title, area, tokens, query);
+            if (score > 0) filtered.push({ area, index, title: video.title, score });
+          });
+        });
+
+        filtered.sort((a, b) => b.score - a.score || a.title.localeCompare(b.title, 'pt-BR'));
+
+        cardsContainer.innerHTML = '';
+
+        if (!filtered.length) {
+          noResultsMessage.style.display = 'block';
+          updateResultsInfo('0 resultados para a sua busca');
+          return;
+        }
+
+        noResultsMessage.style.display = 'none';
+        const fragment = document.createDocumentFragment();
+        filtered.forEach(item => {
+          const titleTokens = rawTokens.filter(token => normalizeText(item.title).includes(normalizeText(token)));
+          const areaTokens = rawTokens.filter(token => normalizeText(item.area).includes(normalizeText(token)));
+
+          const card = createCardElement({
+            title: highlightText(item.title, titleTokens),
+            subtitle: highlightText(item.area, areaTokens),
+            onClick: () => showVideoView(item.area, item.index),
+            useHtml: true
+          });
+          fragment.appendChild(card);
+        });
+
+        cardsContainer.appendChild(fragment);
+        updateResultsInfo(`${filtered.length} resultado${filtered.length > 1 ? 's' : ''} encontrado${filtered.length > 1 ? 's' : ''} por relevância`);
+      }
+
+      function initializeFromHash() {
+        if (!location.hash || location.hash === '#home') {
+          history.replaceState({ view: 'home' }, '', '#home');
+          showHomeView({ pushHistory: false });
+          return;
+        }
+
+        const decoded = decodeHash(location.hash);
+        if (decoded && data[decoded.area] && data[decoded.area][decoded.videoIndex]) {
+          history.replaceState({ view: 'video', area: decoded.area, videoIndex: decoded.videoIndex }, '', location.hash);
+          showVideoView(decoded.area, decoded.videoIndex, { pushHistory: false });
+          return;
+        }
+
+        history.replaceState({ view: 'home' }, '', '#home');
+        showHomeView({ pushHistory: false });
+      }
+
       searchBar.addEventListener('input', debounce(function () {
-        const query = this.value.trim().toLowerCase();
-        if (query === "") {
-          document.getElementById('noResultsMessage').style.display = 'none';
+        const query = this.value.trim();
+        if (!query) {
           renderAreaCards();
         } else {
           renderFilteredVideos(query);
         }
-      }, 300));
+      }, 250));
 
-      // Botão de voltar: agora sempre retorna à tela inicial, sem depender do histórico
-      document.getElementById('backButton').addEventListener('click', stopVideoAndShowHome);
+      searchBar.addEventListener('keydown', event => {
+        if (event.key !== 'Enter') return;
+        if (videoView.style.display === 'block') return;
 
-      // Configura o estado inicial da URL, se não houver hash
-      if (!location.hash) {
-        history.replaceState({ view: 'home' }, "", "#home");
-      }
+        const firstResult = cardsContainer.querySelector('.card');
+        if (!firstResult) return;
 
-      // Lida com a navegação do histórico (botões do navegador)
-      window.addEventListener('popstate', (event) => {
+        event.preventDefault();
+        firstResult.click();
+      });
+
+      backButton.addEventListener('click', () => showHomeView());
+
+      window.addEventListener('popstate', event => {
         const state = event.state;
-        if (state) {
-          if (state.view === 'home') {
-            stopVideoAndShowHome();
-          } else if (state.view === 'video') {
-            showVideoView(state.area, state.videoIndex);
-          }
-        } else {
-          // Se não houver estado, retorna à tela inicial
-          stopVideoAndShowHome();
+        if (!state || state.view === 'home') {
+          showHomeView({ pushHistory: false });
+          return;
+        }
+
+        if (state.view === 'video') {
+          showVideoView(state.area, state.videoIndex, { pushHistory: false });
         }
       });
+
+      renderAreaCards();
+      initializeFromHash();
     });
   </script>
 </body>
