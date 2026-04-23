@@ -74,6 +74,16 @@
       font-size: 2em;
       color: var(--brand);
     }
+    body.video-mode header {
+      padding: 12px 20px;
+    }
+    body.video-mode header h1 {
+      font-size: 1.35rem;
+    }
+    body.video-mode #searchBar,
+    body.video-mode #resultsInfo {
+      display: none;
+    }
     #searchBar {
       margin-top: 15px;
       padding: 10px;
@@ -199,6 +209,21 @@
       border-radius: 8px;
       box-shadow: 0 14px 28px var(--glow-strong);
       background: var(--video-bg);
+    }
+    .video-fallback {
+      margin-top: 10px;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+    .video-fallback a {
+      color: var(--brand);
+      font-weight: 600;
+      text-decoration: none;
+      border-bottom: 1px dashed var(--accent);
+    }
+    .video-fallback a:hover {
+      color: var(--brand-strong);
+      border-bottom-color: var(--brand);
     }
     #relatedVideosContainer {
       flex: 1 1 280px;
@@ -486,6 +511,12 @@
       return link;
     }
 
+    function getDriveViewLink(link) {
+      if (!link) return '';
+      if (link.includes('/preview')) return link.replace(/\/preview(\?.*)?$/, '/view');
+      return link;
+    }
+
     function encodeHash(area, index) {
       return `#video=${encodeURIComponent(area)}&index=${index}`;
     }
@@ -622,6 +653,7 @@
       function loadVideo(link, title) {
         mainVideoContainer.innerHTML = '';
         const formattedLink = formatDriveLink(link);
+        const driveViewLink = getDriveViewLink(link) || formattedLink;
 
         if (!formattedLink) {
           mainVideoContainer.innerHTML = '<p>Não foi possível carregar este vídeo.</p>';
@@ -635,11 +667,19 @@
         iframe.setAttribute('allowfullscreen', 'true');
         iframe.setAttribute('loading', 'lazy');
         mainVideoContainer.appendChild(iframe);
+
+        const fallback = document.createElement('p');
+        fallback.className = 'video-fallback';
+        fallback.innerHTML = `Se o player não carregar, <a href="${driveViewLink}" target="_blank" rel="noopener noreferrer">abra o vídeo no Google Drive</a>.`;
+        mainVideoContainer.appendChild(fallback);
       }
 
       function showVideoView(area, videoIndex, options = {}) {
         const { pushHistory = true } = options;
         if (!data[area] || !data[area][videoIndex]) return;
+
+        document.body.classList.add('video-mode');
+        window.scrollTo({ top: 0, behavior: 'auto' });
 
         homeView.style.display = 'none';
         videoView.style.display = 'block';
@@ -666,6 +706,8 @@
 
       function showHomeView(options = {}) {
         const { pushHistory = true } = options;
+        document.body.classList.remove('video-mode');
+        window.scrollTo({ top: 0, behavior: 'auto' });
         mainVideoContainer.innerHTML = '';
         videoView.style.display = 'none';
         homeView.style.display = 'block';
